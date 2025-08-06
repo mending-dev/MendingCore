@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group = 'dev.mending.core'
+version = '1.0.0'
+
+jar.archiveBaseName = 'ExamplePlugin'
+
+repositories {
+    maven {
+        name = 'papermc'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT'
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    compileOnly(project(":paper:api"))
+}
+
+test {
+    useJUnitPlatform()
+}

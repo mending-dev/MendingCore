@@ -1,0 +1,9 @@
+name: ExamplePlugin
+version: '1.0.0'
+main: dev.mending.example.ExamplePlugin
+api-version: '1.21'
+dependencies:
+  server:
+    MendingCore:
+      load: BEFORE
+      required: true

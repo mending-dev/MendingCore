@@ -1,0 +1,7 @@
+name: MendingCore
+version: '1.0.0'
+main: dev.mending.core.paper.plugin.PaperPlugin
+api-version: '1.21'
+authors: [ MrMending ]
+description: All-In-One Solution for all my plugins
+website: https://mending.dev

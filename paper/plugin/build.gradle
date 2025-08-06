@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'dev.mending.core'
+version = '1.0.0'
+
+jar {
+    enabled = false
+}
+
+shadowJar {
+    archiveBaseName.set('MendingCore')
+    archiveClassifier.set('')
+}
+
+build.dependsOn shadowJar
+
+repositories {
+    maven {
+        name = 'papermc'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    compileOnly 'io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT'
+    implementation(project(":paper:api"))
+}
+
+test {
+    useJUnitPlatform()
+}
