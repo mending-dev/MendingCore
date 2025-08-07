@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'dev.mending.core'
@@ -23,4 +24,23 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'dev.mending.core'
+            artifactId = 'paper-api'
+            version = '1.0.0'
+
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "MendingCoreRepo"
+            url = layout.buildDirectory.dir("repo/releases")
+        }
+    }
 }
