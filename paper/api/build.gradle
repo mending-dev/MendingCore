@@ -23,12 +23,15 @@ test {
     useJUnitPlatform()
 }
 
+
+def isSnapshot = version.endsWith('-SNAPSHOT')
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = 'dev.mending.core'
             artifactId = 'paper-api'
-            version = '1.0.0'
+            version = project.version
 
             from components.java
         }
@@ -37,7 +40,9 @@ publishing {
     repositories {
         maven {
             name = "MendingCoreRepo"
-            url = layout.buildDirectory.dir("repo/releases")
+            url = isSnapshot
+                    ? layout.buildDirectory.dir("repo/snapshots")
+                    : layout.buildDirectory.dir("repo/releases")
         }
     }
 }

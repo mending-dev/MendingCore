@@ -1,0 +1,75 @@
+name: Publish to Maven Repo
+
+on:
+  push:
+    tags:
+      - 'v*'  # Nur bei Version-Tags wie v1.0.0
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Extract version from tag
+        id: vars
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Determine repo type
+        id: repo-type
+        run: |
+          if [[ "${{ steps.vars.outputs.VERSION }}" == *SNAPSHOT ]]; then
+            echo "TARGET_PATH=snapshots" >> $GITHUB_OUTPUT
+          else
+            echo "TARGET_PATH=releases" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Gradle cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Build and publish to local repo folder
+        run: ./gradlew -Pversion=${{ steps.vars.outputs.VERSION }} publish
+
+      - name: Checkout maven-repo
+        uses: actions/checkout@v4
+        with:
+          repository: deinuser/maven-repo
+          path: maven-repo
+          token: ${{ secrets.MAVEN_REPO_TOKEN }}
+
+      - name: Copy published artifacts
+        run: |
+          mkdir -p maven-repo/repo/${{ steps.repo-type.outputs.TARGET_PATH }}
+          cp -r paper/api/build/repo/${{ steps.repo-type.outputs.TARGET_PATH }}/* maven-repo/repo/${{ steps.repo-type.outputs.TARGET_PATH }}/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mendingcore-artifacts
+          path: paper/api/build/libs/
+
+      - name: Commit and push to maven-repo
+        run: |
+          cd maven-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Publish version ${{ steps.vars.outputs.VERSION }}"
+            git push
+          fi
