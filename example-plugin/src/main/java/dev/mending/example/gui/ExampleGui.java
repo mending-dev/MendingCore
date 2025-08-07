@@ -15,11 +15,13 @@ public class ExampleGui extends Gui {
     private int rows = 1;
     private boolean toggle = false;
 
+    private final EnchanterGui enchanterGui;
     private final AnotherGui anotherGui;
 
     public ExampleGui(ExamplePlugin plugin) {
         super(Component.text(0), 1);
         this.plugin = plugin;
+        this.enchanterGui = new EnchanterGui(this);
         this.anotherGui = new AnotherGui(plugin, this);
     }
 
@@ -75,6 +77,16 @@ public class ExampleGui extends Gui {
                 }
             })
         );
+
+        if (rows > 2) {
+            setItem(22, new GuiIcon(
+                            new ItemBuilder(Material.ENCHANTING_TABLE)
+                                    .setName(Component.text("Open Enchanter Gui"))
+                    ).onClick(e -> {
+                        enchanterGui.open(player);
+                    })
+            );
+        }
 
         if (rows == 6) {
             setItem(49, new GuiIcon(

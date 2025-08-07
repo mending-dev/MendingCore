@@ -1,7 +1,9 @@
 package dev.mending.core.paper.api.gui;
 
+import dev.mending.core.paper.api.gui.action.ActionSlotManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -23,6 +25,9 @@ public abstract class Gui implements InventoryHolder {
     private int rows;
     private final Map<Integer, GuiIcon> items = new HashMap<>();
 
+    private ActionSlotManager actionSlotManager;
+
+    // TODO: Change to getPlayer()
     protected Player player;
 
     /**
@@ -184,10 +189,11 @@ public abstract class Gui implements InventoryHolder {
      * @param event The event triggered when an item is clicked in the inventory.
      */
     public void handleClick(InventoryClickEvent event) {
-        int slot = event.getRawSlot();
 
+        int slot = event.getRawSlot();
         GuiIcon icon = this.items.get(slot);
-        if (icon == null) {
+
+        if (icon == null || icon.getItemStack().getType().equals(Material.AIR)) {
             event.setCancelled(true);
             return;
         }
@@ -199,6 +205,17 @@ public abstract class Gui implements InventoryHolder {
         if (icon.getAction() != null) {
             icon.getAction().accept(event);
         }
+    }
+
+    public ActionSlotManager getActionSlotManager() {
+        if (actionSlotManager == null) {
+            actionSlotManager = new ActionSlotManager(this);
+        }
+        return actionSlotManager;
+    }
+
+    public boolean hasActionSlots() {
+        return actionSlotManager != null;
     }
 
     /**

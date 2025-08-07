@@ -2,7 +2,7 @@ package dev.mending.example.gui;
 
 import dev.mending.core.paper.api.gui.Gui;
 import dev.mending.core.paper.api.gui.GuiIcon;
-import dev.mending.core.paper.api.gui.pagination.Pagination;
+import dev.mending.core.paper.api.gui.pagination.PaginationManager;
 import dev.mending.core.paper.api.item.ItemBuilder;
 import dev.mending.core.paper.api.item.SkullBuilder;
 import dev.mending.example.ExamplePlugin;
@@ -15,7 +15,7 @@ public class AnotherGui extends Gui {
     private final ExamplePlugin plugin;
     private final Gui previous;
 
-    private final Pagination pagination = new Pagination(this);
+    private final PaginationManager paginationManager = new PaginationManager(this);
 
     private GuiIcon previousIcon;
     private GuiIcon nextIcon;
@@ -26,10 +26,10 @@ public class AnotherGui extends Gui {
         this.plugin = plugin;
         this.previous = previous;
 
-        pagination.registerPageSlotsBetween(10, 16);
+        paginationManager.registerPageSlotsBetween(10, 16);
 
         for (int i = 0; i < 100; i++) {
-            pagination.addItem(new GuiIcon(new ItemBuilder(Material.PAPER).setName(Component.text(i))));
+            paginationManager.addItem(new GuiIcon(new ItemBuilder(Material.PAPER).setName(Component.text(i))));
         }
 
         updatePaginationItems();
@@ -40,7 +40,7 @@ public class AnotherGui extends Gui {
     @Override
     public void update() {
 
-        pagination.goFirstPage();
+        paginationManager.goFirstPage();
 
         setItem(22, new GuiIcon(
             new ItemBuilder(Material.OAK_DOOR)
@@ -50,7 +50,7 @@ public class AnotherGui extends Gui {
             })
         );
 
-        pagination.update();
+        paginationManager.update();
     }
 
     private void updatePaginationItems() {
@@ -61,8 +61,8 @@ public class AnotherGui extends Gui {
                             .setName(Component.text("Previous Page"))
                             .build()
             ).onClick(e -> {
-                pagination.goPreviousPage();
-                pagination.update();
+                paginationManager.goPreviousPage();
+                paginationManager.update();
             });
 
             GuiIcon nextIcon = new GuiIcon(
@@ -70,8 +70,8 @@ public class AnotherGui extends Gui {
                             .setName(Component.text("Next Page"))
                             .build()
             ).onClick(e -> {
-                pagination.goNextPage();
-                pagination.update();
+                paginationManager.goNextPage();
+                paginationManager.update();
             });
 
             Bukkit.getScheduler().runTask(plugin, syncTask -> {

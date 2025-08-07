@@ -7,14 +7,14 @@ import org.bukkit.Material;
 
 import java.util.*;
 
-public class Pagination {
+public class PaginationManager {
 
     private final Gui gui;
     private final List<Integer> slots = new ArrayList<>();
     private final List<GuiIcon> items = new ArrayList<>();
     private int page = 0;
 
-    public Pagination(Gui gui) {
+    public PaginationManager(Gui gui) {
         this.gui = gui;
     }
 
@@ -52,31 +52,31 @@ public class Pagination {
         return this.page;
     }
 
-    public Pagination setPage(int page) {
+    public PaginationManager setPage(int page) {
         this.page = page;
         return this;
     }
 
-    public Pagination goNextPage() {
+    public PaginationManager goNextPage() {
         if (this.page < getLastPage()) {
             this.page++;
         }
         return this;
     }
 
-    public Pagination goPreviousPage() {
+    public PaginationManager goPreviousPage() {
         if (this.page > 0) {
             this.page--;
         }
         return this;
     }
 
-    public Pagination goFirstPage() {
+    public PaginationManager goFirstPage() {
         this.page = 0;
         return this;
     }
 
-    public Pagination goLastPage() {
+    public PaginationManager goLastPage() {
         this.page = getLastPage();
         return this;
     }
