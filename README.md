@@ -46,7 +46,7 @@ repositories {
 }
 
 dependencies {
-    implementation "dev.mending.core:paper-api:1.0.0"
+    implementation "dev.mending.core:paper-api:VERSION"
 }
 ```
 
@@ -59,7 +59,7 @@ repositories {
 }
 
 dependencies {
-    implementation("dev.mending.core:paper-api:1.0.0")
+    implementation("dev.mending.core:paper-api:VERSION")
 }
 ```
 
@@ -68,7 +68,7 @@ dependencies {
 ```xml
 <repositories>
     <repository>
-        <id>mendingcore-repo</id>
+        <id>mending-repo</id>
         <url>https://repo.mending.dev/releases</url>
     </repository>
 </repositories>
