@@ -1,5 +1,7 @@
-group = 'dev.mending.core'
-version = '1.0-SNAPSHOT'
+allprojects {
+    group = 'dev.mending.core'
+    version = '1.0.0-SNAPSHOT'
+}
 
 subprojects {
 

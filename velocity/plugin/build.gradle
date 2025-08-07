@@ -2,9 +2,6 @@ plugins {
     id 'java'
 }
 
-group = 'dev.mending.core'
-version = '1.0.0'
-
 repositories {
     mavenCentral()
 }
