@@ -1,12 +1,13 @@
 package dev.mending.example;
 
 import dev.mending.core.paper.api.item.ItemBuilder;
-import dev.mending.core.paper.api.item.SkullBuilder;
+import dev.mending.example.gui.ExampleGui;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,8 +25,21 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
         final Player player = e.getPlayer();
         final Inventory inventory = player.getInventory();
 
-        inventory.setItem(0, new ItemBuilder(Material.DIAMOND).setName(Component.text("Test 1")).build());
-        inventory.setItem(1, new SkullBuilder(player.getUniqueId()).setName(Component.text("Test 2")).build());
+        inventory.setItem(0, new ItemBuilder(Material.DIAMOND).setName(Component.text("Your Item")).build());
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+
+        if (!e.getAction().isRightClick() || e.getItem() == null || e.getItem().getType().equals(Material.AIR)) {
+            return;
+        }
+
+        final Player player = e.getPlayer();
+
+        if (e.getItem().getType().equals(Material.DIAMOND)) {
+            new ExampleGui().open(player);
+        }
     }
 
 }
