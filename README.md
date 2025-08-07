@@ -77,7 +77,7 @@ dependencies {
     <dependency>
         <groupId>dev.mending.core</groupId>
         <artifactId>paper-api</artifactId>
-        <version>1.0.0</version>
+        <version>VERSION</version>
     </dependency>
 </dependencies>
 ```
