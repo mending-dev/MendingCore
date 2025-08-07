@@ -34,7 +34,7 @@ jobs:
       - name: Checkout maven-repo
         uses: actions/checkout@v4
         with:
-          repository: deinuser/maven-repo
+          repository: mending-dev/maven-repo
           path: maven-repo
           token: ${{ secrets.MAVEN_REPO_TOKEN }}
 
