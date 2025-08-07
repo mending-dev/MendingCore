@@ -38,7 +38,7 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
         final Player player = e.getPlayer();
 
         if (e.getItem().getType().equals(Material.DIAMOND)) {
-            new ExampleGui().open(player);
+            new ExampleGui(this).open(player);
         }
     }
 

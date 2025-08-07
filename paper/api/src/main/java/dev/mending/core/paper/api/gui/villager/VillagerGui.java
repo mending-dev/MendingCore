@@ -1,4 +1,4 @@
-package dev.mending.core.paper.api.gui;
+package dev.mending.core.paper.api.gui.villager;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;

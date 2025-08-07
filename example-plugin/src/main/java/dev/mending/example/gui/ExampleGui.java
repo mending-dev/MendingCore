@@ -3,17 +3,24 @@ package dev.mending.example.gui;
 import dev.mending.core.paper.api.gui.Gui;
 import dev.mending.core.paper.api.gui.GuiIcon;
 import dev.mending.core.paper.api.item.ItemBuilder;
+import dev.mending.example.ExamplePlugin;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 
 public class ExampleGui extends Gui {
 
+    private final ExamplePlugin plugin;
+
     private int count = 0;
     private int rows = 1;
     private boolean toggle = false;
 
-    public ExampleGui() {
+    private final AnotherGui anotherGui;
+
+    public ExampleGui(ExamplePlugin plugin) {
         super(Component.text(0), 1);
+        this.plugin = plugin;
+        this.anotherGui = new AnotherGui(plugin, this);
     }
 
     public void update() {
@@ -66,6 +73,16 @@ public class ExampleGui extends Gui {
                 }
             })
         );
+
+        if (rows == 6) {
+            setItem(49, new GuiIcon(
+                new ItemBuilder(Material.CHEST)
+                    .setName(Component.text("Open Another Gui"))
+                ).onClick(e -> {
+                    anotherGui.open(player);
+                })
+            );
+        }
     }
 
 }
