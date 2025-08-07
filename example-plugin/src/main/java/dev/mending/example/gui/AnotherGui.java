@@ -33,6 +33,8 @@ public class AnotherGui extends Gui {
         }
 
         updatePaginationItems();
+
+        fillRows(new GuiIcon(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(Component.empty())), 1, 3);
     }
 
     @Override

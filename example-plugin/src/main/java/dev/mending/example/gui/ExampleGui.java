@@ -25,6 +25,8 @@ public class ExampleGui extends Gui {
 
     public void update() {
 
+        fill(new GuiIcon(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(Component.empty())));
+
         setItem(1, new GuiIcon(
             new ItemBuilder(Material.WHITE_DYE)
                 .setName(Component.text("Increase Count"))
@@ -58,7 +60,7 @@ public class ExampleGui extends Gui {
             ).onClick(e -> {
                 if (rows < 6) {
                     rows++;
-                    setSize(rows);
+                    setRows(rows);
                 }
             })
         );
@@ -69,7 +71,7 @@ public class ExampleGui extends Gui {
             ).onClick(e -> {
                 if (rows > 1) {
                     rows--;
-                    setSize(rows);
+                    setRows(rows);
                 }
             })
         );

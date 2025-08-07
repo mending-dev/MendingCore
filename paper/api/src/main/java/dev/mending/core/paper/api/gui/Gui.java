@@ -20,7 +20,7 @@ public abstract class Gui implements InventoryHolder {
 
     private Inventory inventory;
     private Component title;
-    private int size;
+    private int rows;
     private final Map<Integer, GuiIcon> items = new HashMap<>();
 
     protected Player player;
@@ -33,8 +33,8 @@ public abstract class Gui implements InventoryHolder {
      */
     public Gui(@Nonnull Component title, @Nonnegative int rows) {
         this.title = title;
-        this.size = rows * 9;
-        this.inventory = Bukkit.createInventory(this, this.size, title);
+        this.rows = rows;
+        this.inventory = Bukkit.createInventory(this, this.rows * 9, title);
     }
 
     /**
@@ -52,8 +52,8 @@ public abstract class Gui implements InventoryHolder {
      *
      * @param rows The new number of rows (each row has 9 slots).
      */
-    public void setSize(@Nonnegative int rows) {
-        this.size = rows * 9;
+    public void setRows(@Nonnegative int rows) {
+        this.rows = rows;
         updateGui();
     }
 
@@ -63,7 +63,7 @@ public abstract class Gui implements InventoryHolder {
     private void updateGui() {
 
         Inventory oldInventory = this.inventory;
-        this.inventory = Bukkit.createInventory(this, this.size, this.title);
+        this.inventory = Bukkit.createInventory(this, this.rows * 9, this.title);
         update();
 
         for (HumanEntity viewer : List.copyOf(oldInventory.getViewers())) {
@@ -79,7 +79,7 @@ public abstract class Gui implements InventoryHolder {
      * @param guiIcon The GuiIcon to be added to the GUI.
      */
     public void addItem(@Nonnull GuiIcon guiIcon) {
-        for (int slot = 0; slot < this.size; slot++) {
+        for (int slot = 0; slot < this.rows; slot++) {
             if (!this.items.containsKey(slot)) {
                 setItem(slot, guiIcon);
                 break;
@@ -96,6 +96,46 @@ public abstract class Gui implements InventoryHolder {
     public void setItem(@Nonnegative int slot, @Nonnull GuiIcon guiIcon) {
         this.items.put(slot, guiIcon);
         this.inventory.setItem(slot, guiIcon.getItemStack());
+    }
+
+    public void fill(@Nonnull GuiIcon guiIcon) {
+        for (int slot = 0; slot < rows * 9; slot++) {
+            setItem(slot, guiIcon);
+        }
+    }
+
+    public void fillSlots(@Nonnull GuiIcon guiIcon, int... slots) {
+        for (int slot : slots) {
+            setItem(slot, guiIcon);
+        }
+    }
+
+    public void fillSlotsBetween(@Nonnull GuiIcon guiIcon, @Nonnegative int start, @Nonnegative int end) {
+        for (int slot = start; slot < (end + 1); slot++ ) {
+            setItem(slot, guiIcon);
+        }
+    }
+
+    public void fillRows(@Nonnull GuiIcon guiIcon, @Nonnegative int... rows) {
+        for (int row : rows) {
+            if (row < 1 || row > this.rows) continue;
+            int start = (row - 1) * 9;
+            int end = start + 9;
+            for (int slot = start; slot < end; slot++) {
+                setItem(slot, guiIcon);
+            }
+        }
+    }
+
+    public void fillColumns(@Nonnull GuiIcon guiIcon, @Nonnegative int... columns) {
+        for (int column : columns) {
+            if (column < 1 || column > 9) continue;
+            int start = column - 1;
+            for (int row = 0; row < this.rows; row++) {
+                int slot = row * 9 + start;
+                setItem(slot, guiIcon);
+            }
+        }
     }
 
     /**
