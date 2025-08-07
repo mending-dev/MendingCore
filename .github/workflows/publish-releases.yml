@@ -3,7 +3,7 @@ name: Publish to Maven Repo
 on:
   push:
     tags:
-      - 'v*'  # Nur bei Version-Tags wie v1.0.0
+      - 'v*'
 
 jobs:
   publish:
