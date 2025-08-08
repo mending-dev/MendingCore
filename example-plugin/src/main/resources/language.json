@@ -1,0 +1,9 @@
+{
+  "prefix": "<dark_gray>[<blue>ExamplePlugin</blue>]</dark_gray>",
+  "var": {
+    "player": "<gold>%player%</gold>"
+  },
+  "messages": {
+    "welcome": "<prefix> <gray>Welcome to the server, <var:player><gray>."
+  }
+}

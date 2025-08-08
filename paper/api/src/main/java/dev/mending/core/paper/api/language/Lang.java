@@ -1,6 +1,7 @@
 package dev.mending.core.paper.api.language;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import javax.annotation.Nonnull;
@@ -24,6 +25,10 @@ public class Lang {
 
     public static Component get(@Nonnull String key) {
         return MINI_MESSAGE.deserialize("<lang:" + key + ">");
+    }
+
+    public static TextReplacementConfig replace(@Nonnull String string, @Nonnull String replacement) {
+        return TextReplacementConfig.builder().matchLiteral(string).replacement(replacement).build();
     }
 
     public static String formatLocalDateTime(@Nonnull LocalDateTime dateTime, String pattern) {

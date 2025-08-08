@@ -1,6 +1,8 @@
 package dev.mending.example;
 
 import dev.mending.core.paper.api.item.ItemBuilder;
+import dev.mending.core.paper.api.language.Lang;
+import dev.mending.core.paper.api.language.Language;
 import dev.mending.example.config.ExampleConfiguration;
 import dev.mending.example.gui.ExampleGui;
 import net.kyori.adventure.text.Component;
@@ -16,10 +18,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ExamplePlugin extends JavaPlugin implements Listener {
 
     private ExampleConfiguration exampleConfiguration = new ExampleConfiguration(this, "example");
+    private Language language = new Language(this);
 
     @Override
     public void onEnable() {
+
+        this.language.init();
         exampleConfiguration.init();
+
         getServer().getPluginManager().registerEvents(this, this);
     }
 
@@ -28,6 +34,8 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
 
         final Player player = e.getPlayer();
         final Inventory inventory = player.getInventory();
+
+        e.joinMessage(language.get("welcome").replaceText(Lang.replace("%player%", player.getName())));
 
         player.sendMessage(exampleConfiguration.getGreeting());
         inventory.setItem(0, new ItemBuilder(Material.DIAMOND).setName(Component.text("Your Item")).build());
