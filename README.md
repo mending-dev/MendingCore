@@ -8,8 +8,6 @@ While this Plugin is designed primarily to support my own plugin ecosystem, it i
 ---
 
 ## 🚀 Features
-
-### Available Now
 - **ItemBuilder / SkullBuilder**  
   Simplify item creation with an intuitive API for building custom items and player skulls.
 - **Custom GUIs & Villager Trades**  
