@@ -1,7 +1,7 @@
 package dev.mending.example.config;
 
 import com.google.gson.JsonObject;
-import dev.mending.core.paper.api.config.Configuration;
+import dev.mending.core.paper.api.config.json.Configuration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 

@@ -8,16 +8,18 @@ While this Plugin is designed primarily to support my own plugin ecosystem, it i
 ---
 
 ## 🚀 Features
-- **ItemBuilder / SkullBuilder**  
-  Simplify item creation with an intuitive API for building custom items and player skulls.
-- **Custom GUIs & Villager Trades**  
-  Create interactive, custom graphical user interfaces and unique villager trades.
-- **JSON Configurations**  
-  Flexible and powerful configuration handling using JSON format.
+- **ItemBuilder**  
+  Simplify item creation with an intuitive API for building custom items.
+- **Custom GUIs**  
+  Create interactive, custom graphical user interfaces with pagination and more.
+- **Villager Trades**  
+  Create your own unique villager trades.
+- **Configurations**  
+  Flexible and powerful configuration handling using JSON or YAML format.
 - **Language Utilities**  
   Tools to easily manage multilingual support and localization.
 - **Additional Utilities**  
-  More helpful tools and APIs to enhance plugin development and functionality.
+  More helpful tools to enhance plugin development and functionality.
 
 ---
 

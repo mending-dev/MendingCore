@@ -1,8 +1,8 @@
-package dev.mending.core.paper.api.language;
+package dev.mending.core.paper.api.language.json;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import dev.mending.core.paper.api.config.Configuration;
+import dev.mending.core.paper.api.config.json.Configuration;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.plugin.java.JavaPlugin;

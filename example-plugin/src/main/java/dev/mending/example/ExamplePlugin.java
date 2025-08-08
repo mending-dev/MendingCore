@@ -2,7 +2,7 @@ package dev.mending.example;
 
 import dev.mending.core.paper.api.item.ItemBuilder;
 import dev.mending.core.paper.api.language.Lang;
-import dev.mending.core.paper.api.language.Language;
+import dev.mending.core.paper.api.language.json.Language;
 import dev.mending.example.config.ExampleConfiguration;
 import dev.mending.example.gui.ExampleGui;
 import net.kyori.adventure.text.Component;

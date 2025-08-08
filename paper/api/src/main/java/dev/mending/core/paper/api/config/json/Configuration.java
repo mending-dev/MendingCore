@@ -1,4 +1,4 @@
-package dev.mending.core.paper.api.config;
+package dev.mending.core.paper.api.config.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
