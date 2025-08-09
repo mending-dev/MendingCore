@@ -35,7 +35,7 @@ public class Language extends Configuration {
      * @param config The configuration file that is loaded.
      */
     @Override
-    public void onLoad(FileConfiguration config) {
+    protected void onLoad(FileConfiguration config) {
         // Clear any previously loaded messages
         this.messages.clear();
         // Retrieve the prefix from the configuration
@@ -86,15 +86,6 @@ public class Language extends Configuration {
         // Clear variables after loading messages
         this.variables.clear();
     }
-
-    /**
-     * This method is called before saving the configuration.
-     * In this case, it does nothing, but can be overridden by subclasses if needed.
-     *
-     * @param config The configuration file that will be saved.
-     */
-    @Override
-    public void onPreSave(FileConfiguration config) {}
 
     /**
      * Retrieves the localized message associated with the given key.

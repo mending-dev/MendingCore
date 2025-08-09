@@ -28,7 +28,7 @@ public class Language extends Configuration {
     }
 
     @Override
-    public void onLoad(JsonObject json) {
+    protected void onLoad(JsonObject json) {
         this.messages.clear();
         this.variables.clear();
 
@@ -80,11 +80,6 @@ public class Language extends Configuration {
 
         // Clear variables if not needed after replacement
         this.variables.clear();
-    }
-
-    @Override
-    public void onPreSave(JsonObject json) {
-        // No default implementation; override if needed
     }
 
     /**

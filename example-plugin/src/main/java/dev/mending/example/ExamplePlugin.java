@@ -3,9 +3,13 @@ package dev.mending.example;
 import dev.mending.core.paper.api.item.ItemBuilder;
 import dev.mending.core.paper.api.language.Lang;
 import dev.mending.core.paper.api.language.json.Language;
-import dev.mending.example.config.ExampleConfiguration;
+import dev.mending.example.command.KitCommand;
+import dev.mending.example.command.SetSpawnCommand;
+import dev.mending.example.config.KitConfig;
+import dev.mending.example.config.LocationConfig;
 import dev.mending.example.gui.ExampleGui;
-import net.kyori.adventure.text.Component;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,18 +19,22 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@Getter
 public class ExamplePlugin extends JavaPlugin implements Listener {
 
-    private ExampleConfiguration exampleConfiguration = new ExampleConfiguration(this, "example");
-    private Language language = new Language(this);
+    private final Language language = new Language(this);
+    private final LocationConfig locationConfig = new LocationConfig(this, "locations");
+    private final KitConfig kitConfig = new KitConfig(this, "kits");
 
     @Override
     public void onEnable() {
 
-        this.language.init();
-        exampleConfiguration.init();
+        language.init();
+        locationConfig.init();
+        kitConfig.init();
 
         getServer().getPluginManager().registerEvents(this, this);
+        registerCommands();
     }
 
     @EventHandler
@@ -36,9 +44,8 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
         final Inventory inventory = player.getInventory();
 
         e.joinMessage(language.get("welcome").replaceText(Lang.replace("%player%", player.getName())));
-
-        player.sendMessage(exampleConfiguration.getGreeting());
-        inventory.setItem(0, new ItemBuilder(Material.DIAMOND).setName(Component.text("Your Item")).build());
+        player.teleport(locationConfig.getSpawnLocation());
+        inventory.setItem(0, new ItemBuilder(Material.DIAMOND).setName(Lang.deserialize("<green>Your Item")).build());
     }
 
     @EventHandler
@@ -53,6 +60,13 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
         if (e.getItem().getType().equals(Material.DIAMOND)) {
             new ExampleGui(this).open(player);
         }
+    }
+
+    private void registerCommands() {
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
+            commands.registrar().register(new SetSpawnCommand(this).getCommand());
+            commands.registrar().register(new KitCommand(this).getCommand());
+        });
     }
 
 }

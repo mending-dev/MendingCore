@@ -2,6 +2,9 @@ package dev.mending.core.paper.api.language;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import javax.annotation.Nonnull;
@@ -12,15 +15,17 @@ public class Lang {
 
     private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 
-    public static Component format(String string) {
-        return MINI_MESSAGE.deserialize(string);
+    public static Component deserialize(String string) {
+        return MINI_MESSAGE.deserialize(string)
+                .applyFallbackStyle(Style.style(NamedTextColor.WHITE, TextDecoration.ITALIC.withState(false)));
     }
 
-    public static String toString(Component component) {
-        if (component == null) {
-            return "";
+    public static String serialize(Component component) {
+        String serialized = MINI_MESSAGE.serialize(component);
+        if (serialized.startsWith("<!italic>")) {
+            serialized = serialized.substring("<!italic>".length());
         }
-        return MINI_MESSAGE.serialize(component);
+        return serialized;
     }
 
     public static Component get(@Nonnull String key) {
@@ -32,11 +37,11 @@ public class Lang {
     }
 
     public static String formatLocalDateTime(@Nonnull LocalDateTime dateTime, String pattern) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern); // For example: HH:mm, dd.MM.yyyy
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return dateTime.format(formatter);
     }
 
-    public static String capitialize(String string) {
+    public static String capitalize(String string) {
         return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
 

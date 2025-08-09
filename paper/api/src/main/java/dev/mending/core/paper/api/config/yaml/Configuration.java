@@ -69,7 +69,7 @@ public abstract class Configuration {
      *
      * @param config The configuration that was loaded.
      */
-    public abstract void onLoad(FileConfiguration config);
+    protected void onLoad(FileConfiguration config) {};
 
     /**
      * Called just before the configuration is saved.
@@ -77,6 +77,6 @@ public abstract class Configuration {
      *
      * @param config The configuration that is about to be saved.
      */
-    public abstract void onPreSave(FileConfiguration config);
+    protected void onPreSave(FileConfiguration config) {};
 
 }

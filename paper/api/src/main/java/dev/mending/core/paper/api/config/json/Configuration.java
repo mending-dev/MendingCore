@@ -1,21 +1,24 @@
 package dev.mending.core.paper.api.config.json;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import dev.mending.core.paper.api.config.json.adapter.ItemStackAdapter;
+import dev.mending.core.paper.api.config.json.adapter.LocationAdapter;
+import org.bukkit.Location;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import java.io.*;
+import java.lang.reflect.Type;
 
 public abstract class Configuration {
 
     protected final JavaPlugin plugin;
-    private final String fileName;
-    private File file;
+    protected final String fileName;
+    protected final Gson gson;
+    protected File file;
+
     private JsonObject json;
-    private final Gson gson;
 
     /**
      * Constructs a new Configuration handler for managing JSON configuration files.
@@ -26,7 +29,20 @@ public abstract class Configuration {
     public Configuration(@Nonnull JavaPlugin plugin, @Nonnull String fileName) {
         this.plugin = plugin;
         this.fileName = fileName + ".json";
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.gson = createGson();
+    }
+
+    /**
+     * Initializes the gson object.
+     */
+    protected Gson createGson() {
+        return new GsonBuilder()
+            .registerTypeAdapter(Location.class, new LocationAdapter())
+            .registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
+            .excludeFieldsWithoutExposeAnnotation()
+            .disableHtmlEscaping()
+            .setPrettyPrinting()
+            .create();
     }
 
     /**
@@ -69,10 +85,17 @@ public abstract class Configuration {
     }
 
     /**
-     * Gets the underlying JsonObject to manipulate.
+     * Get value from jsonObject if exists
      */
-    public JsonObject getJson() {
-        return json;
+    protected <T> T get(String memberName, Type typeOfT) throws JsonSyntaxException {
+        return json.has(memberName) ? gson.fromJson(json.get(memberName), typeOfT) : null;
+    }
+
+    /**
+     * Add value tp jsonObject
+     */
+    protected void add(String property, Object src, Type typeOfSrc) {
+        json.add(property, gson.toJsonTree(src, typeOfSrc));
     }
 
     /**
@@ -80,12 +103,12 @@ public abstract class Configuration {
      *
      * @param json The loaded JsonObject.
      */
-    public abstract void onLoad(JsonObject json);
+    protected void onLoad(JsonObject json) {};
 
     /**
      * Called before saving the configuration.
      *
      * @param json The JsonObject about to be saved.
      */
-    public abstract void onPreSave(JsonObject json);
+    protected void onPreSave(JsonObject json) {};
 }

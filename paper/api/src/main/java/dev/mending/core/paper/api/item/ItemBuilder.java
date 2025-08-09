@@ -11,7 +11,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Arrays;
 
 public class ItemBuilder {
 
@@ -44,20 +43,12 @@ public class ItemBuilder {
     }
 
     public ItemBuilder setName(@Nonnull Component component) {
-        if (component.decoration(TextDecoration.ITALIC) == TextDecoration.State.NOT_SET) {
-            component = component.decoration(TextDecoration.ITALIC, false);
-        }
         this.itemMeta.displayName(component);
         return this;
     }
 
     public ItemBuilder setLore(@Nonnull Component... components) {
-        List<Component> lore = Arrays.stream(components)
-            .map(c -> c.decoration(TextDecoration.ITALIC) == TextDecoration.State.NOT_SET
-                ? c.decoration(TextDecoration.ITALIC, false)
-                : c)
-            .toList();
-        this.itemMeta.lore(lore);
+        this.itemMeta.lore(List.of(components));
         return this;
     }
 
