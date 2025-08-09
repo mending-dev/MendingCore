@@ -1,8 +1,3 @@
-
----
-
-# getting-started.md
-
 # Getting Started
 
 This guide will help you quickly set up your development environment and start building your first plugin.
