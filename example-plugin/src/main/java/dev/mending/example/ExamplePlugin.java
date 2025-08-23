@@ -11,12 +11,14 @@ import dev.mending.example.gui.ExampleGui;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
@@ -45,7 +47,7 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
 
         e.joinMessage(language.get("welcome").replaceText(Lang.replace("%player%", player.getName())));
         player.teleport(locationConfig.getSpawnLocation());
-        inventory.setItem(0, new ItemBuilder(Material.DIAMOND).setName(Lang.deserialize("<green>Your Item")).build());
+        inventory.setItem(0, new ItemBuilder(Material.DIAMOND).setName(Lang.deserialize("<green>Your Item")).setPersistentData(new NamespacedKey(this, "test"), PersistentDataType.INTEGER, 100).build());
     }
 
     @EventHandler
@@ -59,6 +61,7 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
 
         if (e.getItem().getType().equals(Material.DIAMOND)) {
             new ExampleGui(this).open(player);
+            player.sendMessage("" + e.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(this, "test"), PersistentDataType.INTEGER));
         }
     }
 

@@ -1,12 +1,14 @@
 package dev.mending.core.paper.api.item;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -81,6 +83,13 @@ public class ItemBuilder {
         this.itemMeta.setCustomModelData(data);
         return this;
     }
+
+    public ItemBuilder setPersistentData(@Nonnull NamespacedKey key, @Nonnull PersistentDataType type, Object value) {
+        PersistentDataContainer container = this.itemMeta.getPersistentDataContainer();
+        container.set(key, type, value);
+        return this;
+    }
+
 
     public ItemStack build() {
         this.itemStack.setItemMeta(this.itemMeta);
