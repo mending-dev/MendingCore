@@ -1,5 +1,0 @@
-rootProject.name = 'MendingCore'
-include 'paper:api', 'paper:plugin'
-include 'velocity:api', 'velocity:plugin'
-include 'example-plugin'
-

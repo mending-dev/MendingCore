@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '25'
 
       - name: Extract version from tag
         id: vars
@@ -53,13 +53,13 @@ jobs:
       - name: Copy published artifacts
         run: |
           mkdir -p maven-repo/repo/${{ steps.repo-type.outputs.TARGET_PATH }}
-          cp -r paper/api/build/repo/${{ steps.repo-type.outputs.TARGET_PATH }}/* maven-repo/repo/${{ steps.repo-type.outputs.TARGET_PATH }}/
+          cp -r api/build/repo/${{ steps.repo-type.outputs.TARGET_PATH }}/* maven-repo/repo/${{ steps.repo-type.outputs.TARGET_PATH }}/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: mendingcore-artifacts
-          path: paper/api/build/libs/
+          name: mending-core-api
+          path: api/build/libs/
 
       - name: Commit and push to maven-repo
         run: |

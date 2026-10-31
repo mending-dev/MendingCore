@@ -1,0 +1,11 @@
+[versions]
+# Bump "minecraft" and "paper" together. Pin "paper" to a fixed build for reproducible releases.
+minecraft = "26.3"
+paper = "26.3.build.+"
+run-paper = "3.0.2"
+
+[libraries]
+paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+
+[plugins]
+run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }

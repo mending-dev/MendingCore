@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '25'
 
       - name: Gradle cache
         uses: actions/cache@v4
@@ -29,7 +29,7 @@ jobs:
             gradle-${{ runner.os }}-
 
       - name: Build and publish SNAPSHOT
-        run: ./gradlew -Pversion=1.1.0-SNAPSHOT publish
+        run: ./gradlew publish
 
       - name: Checkout maven-repo
         uses: actions/checkout@v4
@@ -41,7 +41,7 @@ jobs:
       - name: Copy published artifacts
         run: |
           mkdir -p maven-repo/repo/snapshots
-          cp -r paper/api/build/repo/snapshots/* maven-repo/repo/snapshots/
+          cp -r api/build/repo/snapshots/* maven-repo/repo/snapshots/
 
       - name: Commit and push SNAPSHOT
         run: |

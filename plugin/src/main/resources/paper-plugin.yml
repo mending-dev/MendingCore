@@ -1,0 +1,6 @@
+name: MendingCore
+version: '${version}'
+main: dev.mending.core.plugin.MendingCorePlugin
+api-version: '${apiVersion}'
+description: Core library and API for Hokai.net plugins
+authors: [MrMending]

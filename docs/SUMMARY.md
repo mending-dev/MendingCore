@@ -1,17 +1,59 @@
-# Summary
+# Table of contents
 
-* [Introduction](index.md)
-* [Getting Started](getting-started.md)
+* [MendingCore](README.md)
+
+## Getting started
+
+* [Installation](getting-started/installation.md)
+* [Using the API in your plugin](getting-started/using-the-api.md)
+* [Building from source](getting-started/building-from-source.md)
+
+## Architecture
+
+* [Overview](architecture/overview.md)
+* [Conventions](architecture/conventions.md)
+* [Build system](architecture/build-system.md)
+
+## Core
+
+* [MendingCore entry point](core/mending-core.md)
+
+## GUI
+
+* [Overview](gui/README.md)
+* [Quickstart](gui/quickstart.md)
+* [Lifecycle](gui/lifecycle.md)
+* [Gui reference](gui/gui-reference.md)
+* [Icons and clicks](gui/icons-and-clicks.md)
+* [Slots and layouts](gui/slots-and-layouts.md)
+* [Input slots](gui/input-slots.md)
+* [Pagination](gui/pagination.md)
+* [Villager GUI](gui/villager-gui.md)
+* [Events and safety](gui/events-and-safety.md)
+* [Best practices](gui/best-practices.md)
+* [Performance](gui/performance.md)
+* [Recipes](gui/recipes.md)
+* [Troubleshooting](gui/troubleshooting.md)
+
+## Items
+
 * [ItemBuilder](items/item-builder.md)
-    * [SkullBuilder](items/skull-builder.md)
-* [GUI System](gui/gui.md)
-    * [Gui](gui/gui.md)
-    * [Icon](gui/icon.md)
-    * [Pagination](gui/pagination.md)
-    * [ActionSlots](gui/action-slots.md)
-* [Language](lang/language.md)
-* [Configurations](configurations/yaml.md)
-* * [YAML](configurations/yaml.md)
-* * [JSON](configurations/json.md)
-* [Utilities](utilities/inventory.md)
-* * [Inventory](utilities/inventory.md)
+* [Skulls](items/skulls.md)
+
+## Configuration
+
+* [YamlConfig](config/yaml-config.md)
+
+## Inventory
+
+* [InventoryUtils](inventory/inventory-utils.md)
+
+## Utilities
+
+* [Parse](util/parse.md)
+
+## Reference
+
+* [Migration from 1.x](reference/migration-from-1x.md)
+* [Troubleshooting](reference/troubleshooting.md)
+* [Changelog](reference/changelog.md)
