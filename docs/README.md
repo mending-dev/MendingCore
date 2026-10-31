@@ -1,5 +1,5 @@
 ---
-description: The shared core library and API for all Mending plugins on Hokai.net.
+description: Essential core library and API for Paper plugins.
 ---
 
 # MendingCore
