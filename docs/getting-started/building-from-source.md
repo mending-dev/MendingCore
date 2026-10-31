@@ -19,7 +19,7 @@ gradle wrapper --gradle-version 9.6.0
 | --- | --- |
 | `./gradlew build` | Compiles, tests and builds all jars. |
 | `./gradlew :plugin:runServer` | Starts a local Paper 26.3 test server with the plugin. |
-| `./gradlew publishToMavenLocal` | Publishes `mending-core-api` to your local Maven repository. |
+| `./gradlew publishToMavenLocal` | Publishes `paper-api` to your local Maven repository. |
 | `./gradlew clean build` | Clean build. |
 
 ## Output
@@ -27,9 +27,9 @@ gradle wrapper --gradle-version 9.6.0
 | File | Content |
 | --- | --- |
 | `plugin/build/libs/MendingCore-<version>.jar` | The server plugin. Contains the API classes too. |
-| `api/build/libs/mending-core-api-<version>.jar` | The API for other developers. |
-| `api/build/libs/mending-core-api-<version>-sources.jar` | Sources for IDE navigation. |
-| `api/build/libs/mending-core-api-<version>-javadoc.jar` | Javadoc. |
+| `api/build/libs/paper-api-<version>.jar` | The API for other developers. |
+| `api/build/libs/paper-api-<version>-sources.jar` | Sources for IDE navigation. |
+| `api/build/libs/paper-api-<version>-javadoc.jar` | Javadoc. |
 
 ## Local test server
 

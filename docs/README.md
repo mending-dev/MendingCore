@@ -14,7 +14,7 @@ MendingCore is the shared foundation for all my plugins. It contains the utiliti
 
 | Module | Artifact | What it is |
 | --- | --- | --- |
-| `api` | `dev.mending:mending-core-api` | Contracts and utilities. This is all your plugins compile against. |
+| `api` | `dev.mending.core:paper-api` | Contracts and utilities. This is all your plugins compile against. |
 | `plugin` | `MendingCore-<version>.jar` | The server plugin: implementation, listeners, lifecycle. It also contains the API classes. |
 
 Your plugins compile against the **API only** and declare the **plugin** as a runtime dependency. See [Using the API in your plugin](getting-started/using-the-api.md).

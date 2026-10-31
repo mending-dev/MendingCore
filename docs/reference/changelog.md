@@ -10,7 +10,7 @@ Complete rewrite of MendingCore as a two-module library: `api` for developers, `
 
 ### Architecture
 
-* Split into `api` (`dev.mending:mending-core-api`) and `plugin` (`MendingCore`).
+* Split into `api` (`dev.mending.core:paper-api`) and `plugin` (`MendingCore`).
 * Entry point `MendingCore` with `MendingCoreProvider` and `ServicesManager` registration.
 * Build logic in a convention plugin, version catalog, Java 25, Paper 26.3.
 * All open GUIs are closed on shutdown.

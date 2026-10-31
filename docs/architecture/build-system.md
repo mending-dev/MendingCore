@@ -64,7 +64,7 @@ If you later add third-party libraries to the plugin module with `implementation
 
 ## Publishing
 
-The `api` module publishes `dev.mending:mending-core-api` with sources and Javadoc jars to a local `build/repo` folder (`repo/snapshots` for `-SNAPSHOT` versions, `repo/releases` otherwise). The GitHub workflow mirrors that folder into `mending-dev/maven-repo`. `./gradlew publishToMavenLocal` still publishes to `mavenLocal`.
+The `api` module publishes `dev.mending.core:paper-api` with sources and Javadoc jars to a local `build/repo` folder (`repo/snapshots` for `-SNAPSHOT` versions, `repo/releases` otherwise). The GitHub workflow mirrors that folder into `mending-dev/maven-repo`. `./gradlew publishToMavenLocal` still publishes to `mavenLocal`.
 
 ## Configuration cache
 

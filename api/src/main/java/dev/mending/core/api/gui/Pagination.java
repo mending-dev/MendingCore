@@ -13,8 +13,8 @@ import java.util.function.Function;
  * Splits a list of items over several pages of a {@link Gui}. Create one with
  * {@link Gui#pagination(int[], Function)}. Only the visible page is mapped to icons.
  *
- * <p>Navigation methods ({@link #next()}, {@link #goTo(int)}, ...) refresh the GUI. Use {@link #page(int)}
- * and {@link #setItems(Collection)} inside {@code render()}, where no refresh is wanted.</p>
+ * Navigation methods ({@link #next()}, {@link #goTo(int)}, ...) refresh the GUI. Use {@link #page(int)}
+ * and {@link #setItems(Collection)} inside {@code render()}, where no refresh is wanted.
  *
  * @param <T> the item type
  */
@@ -36,7 +36,7 @@ public final class Pagination<T> {
         this.mapper = Objects.requireNonNull(mapper, "mapper");
     }
 
-    // ---------------------------------------------------------------- items
+    // ITEMS
 
     /**
      * Replaces all items. Does not refresh the GUI.
@@ -51,7 +51,7 @@ public final class Pagination<T> {
         return this.items;
     }
 
-    // ---------------------------------------------------------------- state
+    // STATE
 
     /**
      * @return the current page, 0-based
@@ -84,7 +84,7 @@ public final class Pagination<T> {
         return this.page > 0;
     }
 
-    // ---------------------------------------------------------------- navigation (refreshes the GUI)
+    // NAVIGATION (refreshes the GUI)
 
     public void next() {
         goTo(this.page + 1);
@@ -111,7 +111,7 @@ public final class Pagination<T> {
         this.gui.refresh();
     }
 
-    // ---------------------------------------------------------------- buttons
+    // BUTTONS
 
     public @NotNull GuiIcon nextIcon(@NotNull ItemStack item) {
         return GuiIcon.of(item).onClick(click -> next());
@@ -129,7 +129,7 @@ public final class Pagination<T> {
         return GuiIcon.of(item).onClick(click -> previous());
     }
 
-    // ---------------------------------------------------------------- internal
+    // INTERNAL
 
     void render() {
         clampPage();

@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:26.3.build.+")
-    compileOnly("dev.mending:mending-core-api:2.0.0-SNAPSHOT")
+    compileOnly("dev.mending.core:paper-api:2.0.0-SNAPSHOT")
 }
 ```
 

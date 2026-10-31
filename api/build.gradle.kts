@@ -9,7 +9,7 @@ dependencies {
 }
 
 base {
-    archivesName = "mending-core-api"
+    archivesName = "paper-api"
 }
 
 java {
@@ -20,7 +20,7 @@ java {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            artifactId = "mending-core-api"
+            artifactId = "paper-api"
             from(components["java"])
         }
     }

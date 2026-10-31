@@ -25,17 +25,13 @@ import java.util.concurrent.CompletableFuture;
 /**
  * A YAML file in the plugin's data folder.
  *
- * <ul>
- *   <li>If the file does not exist, it is copied from the plugin jar (same name). Without a bundled file an
- *       empty config is used.</li>
- *   <li>A bundled file of the same name is used as defaults: missing keys fall back to it when reading.
- *       With {@link #updateMissingKeys(boolean)} they are also written into the file.</li>
- *   <li>Saving writes to a temporary file first and then replaces the original, so a crash cannot leave a
- *       half-written config behind.</li>
- * </ul>
+ * If the file does not exist, it is copied from the plugin jar; without a bundled file an empty config
+ * is used. A bundled file of the same name acts as defaults: missing keys fall back to it when reading
+ * and are written into the file when {@link #updateMissingKeys(boolean)} is enabled. Saving goes through
+ * a temporary file first, so a crash cannot leave a half-written config behind.
  *
- * <p>Use it directly ({@code YamlConfig.of(plugin, "settings").load()}) or subclass it and override
- * {@link #onLoad(FileConfiguration)} / {@link #onPreSave(FileConfiguration)}.</p>
+ * Use it directly ({@code YamlConfig.of(plugin, "settings").load()}) or subclass it and override
+ * {@link #onLoad(FileConfiguration)} / {@link #onPreSave(FileConfiguration)}.
  */
 public class YamlConfig {
 
@@ -73,7 +69,7 @@ public class YamlConfig {
         return this;
     }
 
-    // ---------------------------------------------------------------- loading
+    // LOADING
 
     /**
      * Loads the file.
@@ -106,7 +102,7 @@ public class YamlConfig {
         return true;
     }
 
-    // ---------------------------------------------------------------- access
+    // ACCESS
 
     /**
      * @throws IllegalStateException if {@link #load()} was not called yet
@@ -123,7 +119,7 @@ public class YamlConfig {
         return this.file;
     }
 
-    // ---------------------------------------------------------------- saving
+    // SAVING
 
     /**
      * Saves the file synchronously. Use this in {@code onDisable}.
@@ -162,7 +158,7 @@ public class YamlConfig {
         });
     }
 
-    // ---------------------------------------------------------------- hooks
+    // HOOKS
 
     /**
      * Called after the file was loaded or reloaded successfully.
@@ -176,7 +172,7 @@ public class YamlConfig {
     protected void onPreSave(@NotNull FileConfiguration config) {
     }
 
-    // ---------------------------------------------------------------- internals
+    // INTERNALS
 
     private @NotNull FileConfiguration read() throws IOException, InvalidConfigurationException {
         final YamlConfiguration defaults = readDefaults();

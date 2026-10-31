@@ -16,9 +16,9 @@ import java.util.function.Predicate;
 /**
  * A slot players can put items into and take items out of. Create one with {@link Gui#input(int)}.
  *
- * <p>Supported clicks: left and right click with or without cursor item, and shift click in both directions.
+ * Supported clicks: left and right click with or without cursor item, and shift click in both directions.
  * Everything else stays cancelled. The content is refunded to the player when the GUI closes unless
- * {@link #refundOnClose(boolean)} is disabled or the content was removed in {@code onClose}.</p>
+ * {@link #refundOnClose(boolean)} is disabled or the content was removed in {@code onClose}.
  */
 public final class InputSlot {
 
@@ -41,7 +41,7 @@ public final class InputSlot {
         this.slot = slot;
     }
 
-    // ---------------------------------------------------------------- configuration
+    // CONFIGURATION
 
     /**
      * Item displayed while the slot is empty.
@@ -117,7 +117,7 @@ public final class InputSlot {
         return this;
     }
 
-    // ---------------------------------------------------------------- state
+    // STATE
 
     public int slot() {
         return this.slot;
@@ -154,7 +154,7 @@ public final class InputSlot {
         return taken;
     }
 
-    // ---------------------------------------------------------------- internal
+    // INTERNAL
 
     void render() {
         this.gui.rawInventory().setItem(this.slot, this.content != null ? this.content : this.placeholder);
@@ -210,7 +210,7 @@ public final class InputSlot {
         leftovers.values().forEach(drop -> player.getWorld().dropItemNaturally(player.getLocation(), drop));
     }
 
-    // ---------------------------------------------------------------- click handling
+    // CLICK HANDLING
 
     private void handleCursor(GuiClick click) {
         final Player player = click.player();
@@ -291,7 +291,7 @@ public final class InputSlot {
         this.onChange.accept(click);
     }
 
-    // ---------------------------------------------------------------- helpers
+    // HELPERS
 
     private void update(@Nullable ItemStack newContent) {
         this.content = newContent;

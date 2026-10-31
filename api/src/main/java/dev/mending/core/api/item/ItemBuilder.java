@@ -49,7 +49,7 @@ public final class ItemBuilder {
         return new ItemBuilder(Objects.requireNonNull(item, "item").clone());
     }
 
-    // ---------------------------------------------------------------- basics
+    // BASICS
 
     public @NotNull ItemBuilder amount(int amount) {
         if (amount < 1) {
@@ -71,7 +71,7 @@ public final class ItemBuilder {
         return name(MINI_MESSAGE.deserialize(name));
     }
 
-    // ---------------------------------------------------------------- lore
+    // LORE
 
     public @NotNull ItemBuilder lore(@NotNull Component... lines) {
         return lore(Arrays.asList(lines));
@@ -120,7 +120,7 @@ public final class ItemBuilder {
         return this;
     }
 
-    // ---------------------------------------------------------------- appearance and behaviour
+    // APPEARANCE & BEHAVIOUR
 
     public @NotNull ItemBuilder enchant(@NotNull Enchantment enchantment, int level) {
         this.meta.addEnchant(enchantment, level, true);
@@ -177,7 +177,7 @@ public final class ItemBuilder {
         return this;
     }
 
-    // ---------------------------------------------------------------- escape hatches
+    // ESCAPE HATCHES
 
     /**
      * Direct access to the {@link ItemMeta} for anything this builder does not cover.
@@ -201,7 +201,7 @@ public final class ItemBuilder {
         return this;
     }
 
-    // ---------------------------------------------------------------- build
+    // BUILD
 
     public @NotNull ItemStack build() {
         final ItemStack result = this.item.clone();

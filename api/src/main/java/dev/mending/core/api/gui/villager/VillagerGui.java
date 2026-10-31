@@ -18,8 +18,8 @@ import java.util.function.Consumer;
  * it runs on every {@link #open(Player)}, so trades can depend on the current state. Trades added outside
  * of {@code render()} are permanent.
  *
- * <p>Purchases are not intercepted by this class. Listen to Bukkit's trade events in your plugin if you
- * need to react to them.</p>
+ * Purchases are not intercepted by this class. Listen to Bukkit's trade events in your plugin if you
+ * need to react to them.
  */
 public class VillagerGui {
 

@@ -85,7 +85,7 @@ public final class InventoryUtils {
         return items;
     }
 
-    // ---------------------------------------------------------------- counting
+    // COUNTING
 
     /**
      * Total amount of a material in the storage slots, regardless of item meta.
@@ -129,7 +129,7 @@ public final class InventoryUtils {
         return count(inventory, similarTo) >= amount;
     }
 
-    // ---------------------------------------------------------------- space, add, remove
+    // SPACE, ADD, REMOVE
 
     /**
      * Whether the full amount of the given stack fits into the storage slots (free slots and partial stacks).

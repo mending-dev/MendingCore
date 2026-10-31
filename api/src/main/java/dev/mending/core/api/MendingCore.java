@@ -6,8 +6,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Entry point of the MendingCore API.
  *
- * <p>Other plugins obtain the instance via {@link #get()} (or Bukkit's {@code ServicesManager})
- * and must declare a dependency on {@code MendingCore} in their {@code paper-plugin.yml}.</p>
+ * Other plugins obtain the instance via {@link #get()} (or Bukkit's {@code ServicesManager})
+ * and must declare a dependency on {@code MendingCore} in their {@code paper-plugin.yml}.
  */
 public interface MendingCore {
 

@@ -9,7 +9,7 @@ MendingCore 2.0 is a rewrite. Packages, class names and some behaviour changed. 
 ## Checklist
 
 1. Remove the 1.x jar from the server, install 2.0 ([Installation](../getting-started/installation.md)).
-2. Change your dependency to `dev.mending:mending-core-api:2.0.0-SNAPSHOT` ([Using the API](../getting-started/using-the-api.md)).
+2. Bump your dependency to version `2.0.0-SNAPSHOT` (coordinates stay `dev.mending.core:paper-api`) ([Using the API](../getting-started/using-the-api.md)).
 3. Declare `MendingCore` as a dependency in `paper-plugin.yml` with `join-classpath: true`.
 4. Replace imports (table below).
 5. Port each class using the mappings on this page.

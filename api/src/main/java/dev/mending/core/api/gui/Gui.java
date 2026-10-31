@@ -30,12 +30,12 @@ import java.util.function.Function;
  * A chest-style menu. Override {@link #render()} (or pass a lambda to {@link #create(Component, int, Consumer)})
  * to place icons; call {@link #refresh()} whenever the content should be rebuilt.
  *
- * <p>Everything inside a GUI is locked by default. Players can only interact through {@link GuiIcon} handlers
+ * Everything inside a GUI is locked by default. Players can only interact through {@link GuiIcon} handlers
  * and {@link InputSlot}s. Slots are 0-based, rows and columns are 1-based. All methods must be called on the
- * main thread.</p>
+ * main thread.
  *
- * <p>One instance can be shown to several players at once; they then share the same content. For per-player
- * content create one instance per player.</p>
+ * One instance can be shown to several players at once; they then share the same content. For per-player
+ * content create one instance per player.
  */
 public class Gui implements InventoryHolder {
 
@@ -79,7 +79,7 @@ public class Gui implements InventoryHolder {
         return new Gui(title, rows).onRender(renderer);
     }
 
-    // ---------------------------------------------------------------- lifecycle hooks
+    // LIFECYCLE
 
     /**
      * Places the icons. Called on the first open and on every {@link #refresh()}.
@@ -111,7 +111,7 @@ public class Gui implements InventoryHolder {
         return this;
     }
 
-    // ---------------------------------------------------------------- opening / refreshing
+    // OPENING / REFRESHING
 
     public void open(@NotNull Player player) {
         ensureMainThread();
@@ -144,7 +144,7 @@ public class Gui implements InventoryHolder {
         return viewersOf(this.inventory);
     }
 
-    // ---------------------------------------------------------------- title and size
+    // TITLE & SIZE
 
     public @NotNull Component title() {
         return this.title;
@@ -194,7 +194,7 @@ public class Gui implements InventoryHolder {
         return this;
     }
 
-    // ---------------------------------------------------------------- icons
+    // ICONS
 
     public @NotNull Gui set(int slot, @Nullable GuiIcon icon) {
         checkSlot(slot);
@@ -298,7 +298,7 @@ public class Gui implements InventoryHolder {
         return fillSlots(icon, Slots.border(this.rows));
     }
 
-    // ---------------------------------------------------------------- input slots / pagination
+    // INPUT SLOTS / PAGINATION
 
     /**
      * Returns the input slot at the given position, creating it if necessary. An icon at that slot is removed.
@@ -329,7 +329,7 @@ public class Gui implements InventoryHolder {
         return pagination;
     }
 
-    // ---------------------------------------------------------------- settings
+    // SETTINGS
 
     /**
      * If true, players cannot click in their own inventory while this GUI is open. Default: false.
@@ -344,7 +344,7 @@ public class Gui implements InventoryHolder {
         return this.lockPlayerInventory;
     }
 
-    // ---------------------------------------------------------------- InventoryHolder
+    // INVENTORY HOLDER
 
     @Override
     public @NotNull Inventory getInventory() {
@@ -356,7 +356,7 @@ public class Gui implements InventoryHolder {
         return this.inventory;
     }
 
-    // ---------------------------------------------------------------- event entry points (called by MendingCore)
+    // EVENT ENTRY POINTS (called by MendingCore)
 
     @ApiStatus.Internal
     public void handleClick(@NotNull InventoryClickEvent event) {
@@ -430,7 +430,7 @@ public class Gui implements InventoryHolder {
         }
     }
 
-    // ---------------------------------------------------------------- internals
+    // INTERNALS
 
     private void handlePlayerInventoryClick(InventoryClickEvent event, Player player) {
         if (event.getClick().isShiftClick()) {

@@ -16,7 +16,7 @@ import java.util.UUID;
 /**
  * Factory for player head {@link ItemBuilder}s. Never blocks on network requests.
  *
- * <p>Heads created from the same texture are identical and therefore stack.</p>
+ * Heads created from the same texture are identical and therefore stack.
  */
 public final class Skulls {
 

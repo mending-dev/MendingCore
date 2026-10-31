@@ -8,7 +8,7 @@ description: Modules, packages and the rules that keep MendingCore maintainable.
 
 ```
 MendingCore
-├── api      → dev.mending:mending-core-api   (what you compile against)
+├── api      → dev.mending.core:paper-api   (what you compile against)
 └── plugin   → MendingCore-<version>.jar      (what runs on the server)
 ```
 
@@ -45,7 +45,7 @@ dev.mending.core.plugin        (internal, may change at any time)
 
 ## Why the API is inside the plugin jar
 
-Your plugin compiles against `mending-core-api`, but at runtime there is only one copy of those classes: the one inside `MendingCore-<version>.jar`. With `join-classpath: true` your plugin's class loader can see them. Because all plugins share that single copy, a `Gui` created by plugin A is recognised by the listener in MendingCore, which is what makes the GUI system work across plugins.
+Your plugin compiles against `paper-api`, but at runtime there is only one copy of those classes: the one inside `MendingCore-<version>.jar`. With `join-classpath: true` your plugin's class loader can see them. Because all plugins share that single copy, a `Gui` created by plugin A is recognised by the listener in MendingCore, which is what makes the GUI system work across plugins.
 
 The API classes are **not relocated** inside the plugin jar. Relocating them would break every consumer.
 

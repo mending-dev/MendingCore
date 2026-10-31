@@ -15,8 +15,8 @@ import java.util.function.Consumer;
  * An item inside a {@link Gui} with optional click handlers. Icons can never be taken out of a GUI;
  * use an {@link InputSlot} for slots players may put items into.
  *
- * <p>A handler registered for a specific {@link ClickType} wins over the general {@link #onClick(Consumer)}
- * handler. Double clicks never trigger handlers.</p>
+ * A handler registered for a specific {@link ClickType} wins over the general {@link #onClick(Consumer)}
+ * handler. Double clicks never trigger handlers.
  */
 public final class GuiIcon {
 
