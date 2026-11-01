@@ -28,6 +28,8 @@
 * [Slots and layouts](gui/slots-and-layouts.md)
 * [Input slots](gui/input-slots.md)
 * [Pagination](gui/pagination.md)
+* [ConfirmGui](gui/confirm-gui.md)
+* [Text input](gui/text-input.md)
 * [Villager GUI](gui/villager-gui.md)
 * [Events and safety](gui/events-and-safety.md)
 * [Best practices](gui/best-practices.md)

@@ -20,6 +20,8 @@ The GUI framework builds chest-style menus. It is designed around three ideas:
 | `InputSlot` | A slot players can put items into and take items out of. |
 | `Pagination<T>` | Spreads a list over several pages. |
 | `Slots` | Helpers to build slot arrays (rows, columns, border, inner area). |
+| `ConfirmGui` | A menu with a confirm and a cancel button. |
+| `TextInput` | Asks for a text in a Minecraft dialog window. |
 | `VillagerGui`, `Trade` | A trading window, separate from `Gui`. |
 
 ## How it fits together
@@ -43,6 +45,8 @@ Player clicks ─► GuiListener ─► Gui.handleClick ─► GuiIcon / InputSl
 | [Slots and layouts](slots-and-layouts.md) | Coordinates, `Slots`, fill methods. |
 | [Input slots](input-slots.md) | Letting players put items in. |
 | [Pagination](pagination.md) | Long lists. |
+| [ConfirmGui](confirm-gui.md) | Yes/no menus. |
+| [Text input](text-input.md) | Asking for a text. |
 | [Villager GUI](villager-gui.md) | Trading windows. |
 | [Events and safety](events-and-safety.md) | Exactly what is cancelled and why. |
 | [Best practices](best-practices.md) | How to structure menus. |

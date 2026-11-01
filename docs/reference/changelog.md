@@ -27,6 +27,9 @@ Complete rewrite of MendingCore as a two-module library: `api` for developers, `
 * Clicks another plugin cancelled before still reach a GUI's own slots, so its menus keep working.
 * The rules of input slots are unit tested: no click loses or duplicates an item.
 * `Gui.rowsFor(entries)`: the fewest rows for a number of icons.
+* `GuiIcon.closing` and `GuiIcon.opening`: buttons that close or open a menu, with your item.
+* `ConfirmGui`: a yes/no menu, a second fast click does not run the action again.
+* `TextInput`: asks for a text in a Minecraft dialog window, with validation.
 
 ### Scoreboard, display and world
 

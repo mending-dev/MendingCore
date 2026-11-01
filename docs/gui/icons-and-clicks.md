@@ -16,6 +16,21 @@ description: GuiIcon, GuiClick and how click types are handled.
 | `static GuiIcon of(ItemBuilder builder)` | From a builder (`build()` is called once). |
 | `static GuiIcon of(Material material)` | A plain item. |
 
+### Ready-made buttons
+
+The item is yours, the library only adds the click. The result is a normal icon, so you can add more handlers.
+
+| Signature | Description |
+| --- | --- |
+| `static GuiIcon closing(ItemStack)`, `closing(ItemBuilder)` | Closes the GUI on any click. |
+| `static GuiIcon opening(ItemStack, Gui)`, `opening(ItemBuilder, Gui)` | Opens this GUI, e.g. a back button. It keeps its state. |
+| `static GuiIcon opening(ItemStack, Supplier<Gui>)`, `opening(ItemBuilder, Supplier<Gui>)` | Opens a GUI created on every click. |
+
+```java
+set(5, 5, GuiIcon.closing(ItemBuilder.of(Material.BARRIER).name("<red>Close")));
+set(5, 1, GuiIcon.opening(ItemBuilder.of(Material.ARROW).name("<yellow>Back"), this.parent));
+```
+
 ### Handlers
 
 | Signature | Description |
@@ -61,6 +76,7 @@ The item of a `GuiIcon` is never changed after creation, and handlers receive th
 | `void refresh()` | Same as `gui().refresh()`. |
 | `void close()` | Closes the GUI on the **next tick**. |
 | `void open(Gui other)` | Opens another GUI on the **next tick**. |
+| `void open(TextInput input)` | Asks for a [text](text-input.md) on the **next tick**. |
 
 ### Why next tick?
 

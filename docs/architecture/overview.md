@@ -22,7 +22,7 @@ MendingCore
 ```
 dev.mending.core.api
 ├── MendingCore, MendingCoreProvider
-├── gui          Gui, GuiIcon, GuiClick, InputSlot, Pagination, Slots
+├── gui          Gui, GuiIcon, GuiClick, InputSlot, Pagination, Slots, ConfirmGui, TextInput
 │   └── villager VillagerGui, Trade
 ├── item         ItemBuilder, Skulls
 ├── scoreboard   PlayerBoards, Sidebar

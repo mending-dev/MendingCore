@@ -10,6 +10,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * An item inside a {@link Gui} with optional click handlers. Icons can never be taken out of a GUI;
@@ -38,6 +39,43 @@ public final class GuiIcon {
 
     public static @NotNull GuiIcon of(@NotNull Material material) {
         return new GuiIcon(new ItemStack(Objects.requireNonNull(material, "material")));
+    }
+
+    /**
+     * An icon that closes the GUI when clicked. It stays a normal icon, so more handlers can be added.
+     */
+    public static @NotNull GuiIcon closing(@NotNull ItemStack item) {
+        return of(item).onClick(GuiClick::close);
+    }
+
+    public static @NotNull GuiIcon closing(@NotNull ItemBuilder builder) {
+        return of(builder).onClick(GuiClick::close);
+    }
+
+    /**
+     * An icon that opens another GUI when clicked, e.g. a back button. Reusing an instance keeps its state.
+     */
+    public static @NotNull GuiIcon opening(@NotNull ItemStack item, @NotNull Gui target) {
+        Objects.requireNonNull(target, "target");
+        return of(item).onClick(click -> click.open(target));
+    }
+
+    public static @NotNull GuiIcon opening(@NotNull ItemBuilder builder, @NotNull Gui target) {
+        Objects.requireNonNull(target, "target");
+        return of(builder).onClick(click -> click.open(target));
+    }
+
+    /**
+     * Same with a GUI that is created on every click.
+     */
+    public static @NotNull GuiIcon opening(@NotNull ItemStack item, @NotNull Supplier<? extends Gui> target) {
+        Objects.requireNonNull(target, "target");
+        return of(item).onClick(click -> click.open(target.get()));
+    }
+
+    public static @NotNull GuiIcon opening(@NotNull ItemBuilder builder, @NotNull Supplier<? extends Gui> target) {
+        Objects.requireNonNull(target, "target");
+        return of(builder).onClick(click -> click.open(target.get()));
     }
 
     /**

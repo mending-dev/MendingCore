@@ -66,4 +66,12 @@ public record GuiClick(@NotNull Gui gui, @NotNull Player player, int slot, @NotN
         final Player target = this.player;
         Bukkit.getScheduler().runTask(MendingCore.get().plugin(), () -> other.open(target));
     }
+
+    /**
+     * Asks the player for a text. Runs next tick, which is safe inside click handlers.
+     */
+    public void open(@NotNull TextInput input) {
+        final Player target = this.player;
+        Bukkit.getScheduler().runTask(MendingCore.get().plugin(), () -> input.open(target));
+    }
 }

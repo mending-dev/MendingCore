@@ -20,41 +20,15 @@ public final class Icons {
 
 ## Confirm dialog
 
-A reusable yes/no menu.
+Built in as [ConfirmGui](confirm-gui.md).
 
 ```java
-public final class ConfirmGui extends Gui {
-
-    private final Runnable onConfirm;
-    private final Gui parent;   // may be null
-
-    public ConfirmGui(Component question, Runnable onConfirm, Gui parent) {
-        super(question, 3);
-        this.onConfirm = onConfirm;
-        this.parent = parent;
-    }
-
-    @Override
-    protected void render() {
-        fill(Icons.FILLER);
-        set(2, 4, GuiIcon.of(ItemBuilder.of(Material.LIME_CONCRETE).name("<green>Confirm"))
-            .onLeftClick(click -> {
-                this.onConfirm.run();
-                click.close();
-            }));
-        set(2, 6, GuiIcon.of(ItemBuilder.of(Material.RED_CONCRETE).name("<red>Cancel"))
-            .onLeftClick(click -> {
-                if (this.parent != null) click.open(this.parent);
-                else click.close();
-            }));
-    }
-}
-```
-
-Usage:
-
-```java
-new ConfirmGui(Component.text("Delete home?"), () -> homes.delete(player, "base"), this).open(player);
+ConfirmGui.create(Component.text("Delete home?"),
+        ItemBuilder.of(Material.LIME_CONCRETE).name("<green>Confirm"),
+        ItemBuilder.of(Material.RED_CONCRETE).name("<red>Cancel"))
+    .filler(Icons.FILLER)
+    .onConfirm(click -> homes.delete(click.player(), "base"))
+    .open(player);
 ```
 
 ## Paginated player list
@@ -135,7 +109,20 @@ public final class MainMenu extends Gui {
 }
 ```
 
-For a back button pass the parent into the child, see [Best practices](best-practices.md).
+For a back button pass the parent into the child and use `GuiIcon.opening(item, parent)`, see [Best practices](best-practices.md).
+
+## Rename with a text input
+
+```java
+GuiIcon.of(ItemBuilder.of(Material.NAME_TAG).name(Component.text(home.name())))
+    .onLeftClick(click -> click.open(TextInput.create(Component.text("Rename"))
+        .initial(home.name())
+        .maxLength(16)
+        .onSubmit((player, text) -> home.rename(text))
+        .returnTo(this)));
+```
+
+See [Text input](text-input.md).
 
 ## Upgrade station with input slot and output
 
