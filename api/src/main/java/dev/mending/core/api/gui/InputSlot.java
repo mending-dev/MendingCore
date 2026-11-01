@@ -1,8 +1,10 @@
 package dev.mending.core.api.gui;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,8 +18,8 @@ import java.util.function.Predicate;
 /**
  * A slot players can put items into and take items out of. Create one with {@link Gui#input(int)}.
  *
- * Supported clicks: left and right click with or without cursor item, and shift click in both directions.
- * Everything else stays cancelled. The content is refunded to the player when the GUI closes unless
+ * Supported: left and right click with or without cursor item, shift click in both directions, number keys, dragging
+ * and the creative middle click. Everything else stays cancelled. The content is refunded to the player when the GUI closes unless
  * {@link #refundOnClose(boolean)} is disabled or the content was removed in {@code onClose}.
  */
 public final class InputSlot {
@@ -164,6 +166,8 @@ public final class InputSlot {
         switch (click.type()) {
             case LEFT, RIGHT -> handleCursor(click);
             case SHIFT_LEFT, SHIFT_RIGHT -> handleShiftOut(click);
+            case NUMBER_KEY -> handleNumberKey(click);
+            case MIDDLE -> handleMiddle(click);
             default -> { /* unsupported click types stay cancelled */ }
         }
     }
@@ -195,6 +199,27 @@ public final class InputSlot {
         this.onPut.accept(click, copyOf(stack, moved));
         this.onChange.accept(click);
         return moved;
+    }
+
+    /**
+     * Whether a drag may leave this slot with {@code result}, the whole new stack the server would write.
+     */
+    boolean accepts(@NotNull GuiClick click, @NotNull ItemStack result) {
+        // The server only drags onto a placeholder that matches the item, and would count it as content.
+        if (this.content == null && this.placeholder != null) {
+            return false;
+        }
+        return this.canPut.test(click, result) && result.getAmount() <= limitFor(result);
+    }
+
+    /**
+     * Takes over what a drag wrote. The server sets the same stack in the inventory right after the event.
+     */
+    void applyDragged(@NotNull GuiClick click, @NotNull ItemStack result) {
+        final int moved = result.getAmount() - (this.content == null ? 0 : this.content.getAmount());
+        update(result.clone());
+        this.onPut.accept(click, copyOf(result, moved));
+        this.onChange.accept(click);
     }
 
     /**
@@ -260,6 +285,46 @@ public final class InputSlot {
         this.onTake.accept(click, previous.clone());
         this.onPut.accept(click, cursor.clone());
         this.onChange.accept(click);
+    }
+
+    /** A number key swaps the slot with that hotbar slot; what the limit leaves stays in the hotbar. */
+    private void handleNumberKey(GuiClick click) {
+        final PlayerInventory inventory = click.player().getInventory();
+        final int hotbar = click.event().getHotbarButton();
+        final ItemStack held = inventory.getItem(hotbar);
+        final boolean holding = held != null && !held.isEmpty();
+        if (this.content == null && !holding) {
+            return;
+        }
+        if (this.content != null && !this.canTake.test(click, this.content)) {
+            return;
+        }
+        if (holding && !this.canPut.test(click, held)) {
+            return;
+        }
+        final int amount = holding ? Math.min(held.getAmount(), limitFor(held)) : 0;
+        if (this.content != null && holding && amount < held.getAmount()) {
+            return; // nowhere to put the rest
+        }
+        final ItemStack previous = this.content;
+        update(holding ? copyOf(held, amount) : null);
+        inventory.setItem(hotbar, previous != null ? previous : holding ? remainder(held, amount) : null);
+        if (previous != null) {
+            this.onTake.accept(click, previous.clone());
+        }
+        if (holding) {
+            this.onPut.accept(click, copyOf(held, amount));
+        }
+        this.onChange.accept(click);
+    }
+
+    /** The middle click copies the content to the cursor, for players in creative mode only, as in vanilla. */
+    private void handleMiddle(GuiClick click) {
+        final Player player = click.player();
+        if (this.content != null && player.getGameMode() == GameMode.CREATIVE && player.getItemOnCursor().isEmpty()
+            && this.canTake.test(click, this.content)) {
+            player.setItemOnCursor(copyOf(this.content, this.content.getMaxStackSize()));
+        }
     }
 
     private void takeToCursor(GuiClick click, Player player, boolean half) {

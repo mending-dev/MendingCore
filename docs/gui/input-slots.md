@@ -62,15 +62,21 @@ Changing the content by code does not call `onPut`, `onTake` or `onChange`.
 | Right click | Picks up half (rounded up) | Puts one item, merges one, or swaps |
 | Shift-click on the slot | Moves the content to the player's inventory (what does not fit stays) | n/a |
 | Shift-click in the player's inventory | Moves the item into the first input slot that accepts it | n/a |
+| Number key (1-9) | Swaps the slot with that hotbar slot | n/a |
+| Middle click (creative mode only) | Copies a full stack of the content to the cursor; the content stays | n/a |
+| Dragging | n/a | Spreads the cursor over the slots, see below |
 
-Everything else on an input slot is cancelled and does nothing: number keys, drop, offhand swap, middle click, double click, dragging.
+Everything else on an input slot is cancelled and does nothing: drop, offhand swap, double click, and the middle click outside creative mode.
 
 ### Details
 
 * **Merging** only happens with similar items (same type and meta) and only up to the limit. The rest stays on the cursor.
 * **Swapping** happens when the item on the cursor differs from the content. It only works if the cursor stack fits the limit, `canPut` accepts it and `canTake` allows taking the old content. Callbacks run in the order `onTake` (old item), `onPut` (new item), `onChange`.
 * **Shift-click into the GUI** tries every input slot in slot order and moves as much as fits. If several input slots accept the item, the first one is filled first.
-* **Limits** apply to both manual clicks and shift-clicks.
+* **Limits** apply to every way of putting items in.
+* **Number keys** check `canTake` for the content and `canPut` for the hotbar item. If the hotbar stack is above the limit and the slot is empty, the limit moves and the rest stays in the hotbar. If the slot holds something, the swap only happens when the whole hotbar stack fits.
+* **Middle click** checks `canTake`, moves nothing and runs no callback: it only copies, as in vanilla.
+* **Dragging** works only if every touched slot is an input slot, and is **all or nothing**: if one slot's `canPut` or limit refuses, the whole drag is cancelled. A drag touching an icon or the player's inventory as well is cancelled too. A slot showing a placeholder cannot be dragged onto; click it instead. Each slot counts as one placement: `canPut` receives the slot's whole new stack, `onPut` the added amount, and `click.event()` is a synthetic cancelled event, not one from the server. Do not call `click.close()` or `click.open(...)` differently because of it, they work as usual.
 
 ## Refund on close
 
@@ -118,7 +124,7 @@ An input slot lets players take things out **and** put things in. For a read-onl
 
 ## Pitfalls
 
-* **Don't** expect `canPut` to see single items: it receives the stack on the cursor (or the one being shift-clicked), which can have an amount greater than the limit. The library limits the amount for you.
+* **Don't** expect `canPut` to see single items: it receives the stack on the cursor (or the one being shift-clicked, or the hotbar stack), which can have an amount greater than the limit. The library limits the amount for you.
 * **Don't** keep references to `content()` and expect them to change, it is a copy.
 * **Do** use `maxStackSize(1)` for slots that hold a single object such as a tool.
 * **Do** keep `refundOnClose(true)` unless you really handle the items yourself, otherwise players can lose items.

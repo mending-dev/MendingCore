@@ -16,14 +16,16 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
  */
 public final class GuiListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true)
+    // Not ignoreCancelled: an open GUI is locked whatever others did, so a click another plugin cancelled before must not
+    // leave its menu dead. Gui decides what an earlier cancel means.
+    @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getInventory().getHolder(false) instanceof Gui gui) {
             gui.handleClick(event);
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onDrag(InventoryDragEvent event) {
         if (event.getInventory().getHolder(false) instanceof Gui gui) {
             gui.handleDrag(event);

@@ -10,12 +10,12 @@ MendingCore registers one `GuiListener`. It forwards events to a GUI when the in
 
 | Event | Priority | Cancelled events | Goes to |
 | --- | --- | --- | --- |
-| `InventoryClickEvent` | `NORMAL` | ignored | `Gui.handleClick` |
-| `InventoryDragEvent` | `NORMAL` | ignored | `Gui.handleDrag` |
+| `InventoryClickEvent` | `NORMAL` | handled | `Gui.handleClick` |
+| `InventoryDragEvent` | `NORMAL` | handled | `Gui.handleDrag` |
 | `InventoryOpenEvent` | `MONITOR` | ignored | `Gui.handleOpen` → `onOpen` |
 | `InventoryCloseEvent` | `MONITOR` | n/a | `Gui.handleClose` → `onClose` |
 
-If another plugin cancels a click before MendingCore, the GUI does not process it. The listener uses `getHolder(false)`, which avoids block-state snapshots and keeps the check cheap even though it runs for every inventory on the server.
+If another plugin cancels a click before MendingCore, a click in the GUI part still runs its handler: a GUI is locked anyway, and a menu must not go dead because a plugin forbids inventory clicks in general. A click in the player's own part stays cancelled and does nothing, shift-clicks into input slots included. The listener uses `getHolder(false)`, which avoids block-state snapshots and keeps the check cheap even though it runs for every inventory on the server.
 
 ## Click handling
 
@@ -27,7 +27,7 @@ Top = the GUI part of the window, bottom = the player's own inventory.
 | Click on an input slot | **Cancelled.** Handled by the [input slot](input-slots.md) logic. |
 | Double click in the top part | Cancelled, no handler. |
 | Click outside the window | **Not** cancelled. Vanilla behaviour, the cursor item is dropped. |
-| Click in the bottom part | Allowed, unless `lockPlayerInventory(true)`. |
+| Click in the bottom part | Allowed, unless `lockPlayerInventory(true)` or another plugin cancelled it. |
 | Shift-click in the bottom part | Cancelled. The item is moved into input slots that accept it, otherwise nothing happens. |
 | Double click in the bottom part (collect to cursor) | **Cancelled.** |
 | Click by a non-player | Cancelled. |
@@ -35,7 +35,7 @@ Top = the GUI part of the window, bottom = the player's own inventory.
 
 ## Drag handling
 
-A drag that touches **any** top slot is cancelled. A drag only inside the player's inventory is allowed.
+A drag that touches any top slot is cancelled, unless **all** its slots are [input slots](input-slots.md) that accept it. A drag only inside the player's inventory is left alone.
 
 ## Exploits this closes
 
@@ -43,9 +43,9 @@ A drag that touches **any** top slot is cancelled. A drag only inside the player
 | --- | --- |
 | Taking icons with double click (collect to cursor) | Collecting is cancelled while a GUI is open. |
 | Moving items into the GUI with shift-click | Shift-clicks are cancelled and routed to input slots only. |
-| Dragging items over the GUI | Drags touching the top are cancelled. |
-| Hotbar swap, offhand swap, drop key on GUI slots | Every click on a top slot is cancelled first. |
-| Creative middle-click or creative clicks | Cancelled like any top click. |
+| Dragging items over the GUI | Drags touching the top are cancelled, except over input slots, where the library records the result. |
+| Hotbar swap, offhand swap, drop key on GUI slots | Every click on a top slot is cancelled first; a number key on an input slot is carried out by the library. |
+| Creative middle-click or creative clicks | Cancelled like any top click. On an input slot the middle click copies the content for creative players only. |
 | Pulling icons out via `fixed = false` | The flag no longer exists. |
 | Losing items put into a slot | Input slots track content and refund on close. |
 | Double refund / loss when resizing | Close and open hooks are suppressed while the GUI reopens. |

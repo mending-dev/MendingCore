@@ -23,6 +23,8 @@ Complete rewrite of MendingCore as a two-module library: `api` for developers, `
 * `Pagination<T>` replaces `PaginationManager`: lazy mapping, automatic refresh.
 * `Slots` helper and `fill*` methods (`fillBorder`, `fillEmpty`, `fillRange`).
 * Fixed: items placed in action slots were lost on close.
+* Input slots also take number keys, dragging and the creative middle click.
+* Clicks another plugin cancelled before still reach a GUI's own slots, so its menus keep working.
 * Fixed: occupied action slots overwrote items.
 * Fixed: double-click collecting pulled icons out of the GUI.
 * Fixed: handlers ran three times on double click.

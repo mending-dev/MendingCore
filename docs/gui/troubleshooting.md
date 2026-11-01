@@ -56,7 +56,6 @@ One `Gui` instance is shared by all viewers. Create one instance per player if s
 ## Clicks do nothing at all
 
 * MendingCore is not enabled, so no listener is registered. Check the server log and your `paper-plugin.yml` dependency.
-* Another plugin cancels inventory click events before MendingCore (it ignores cancelled events).
 * You modified `getInventory()` directly and expect handlers for those items. Items must be placed with `set`.
 
 ## `onOpen` / `onClose` are not called

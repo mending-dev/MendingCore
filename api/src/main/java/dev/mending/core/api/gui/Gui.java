@@ -6,9 +6,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.DragType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -18,8 +20,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -374,7 +378,10 @@ public class Gui implements InventoryHolder {
         }
 
         if (raw >= this.icons.length) {
-            handlePlayerInventoryClick(event, player);
+            // The player's own inventory is not the GUI's: what another plugin forbade stays forbidden.
+            if (!event.isCancelled()) {
+                handlePlayerInventoryClick(event, player);
+            }
             return;
         }
 
@@ -398,12 +405,24 @@ public class Gui implements InventoryHolder {
     @ApiStatus.Internal
     public void handleDrag(@NotNull InventoryDragEvent event) {
         final int size = event.getInventory().getSize();
+        boolean touchesGui = false;
+        boolean onlyInputs = true;
         for (int raw : event.getRawSlots()) {
             if (raw < size) {
-                event.setCancelled(true);
-                return;
+                touchesGui = true;
+                onlyInputs &= this.inputs[raw] != null;
+            } else {
+                onlyInputs = false;
             }
         }
+        if (!touchesGui) {
+            return; // only the player's own inventory
+        }
+        if (!onlyInputs || !(event.getWhoClicked() instanceof Player player)) {
+            event.setCancelled(true);
+            return;
+        }
+        applyDrag(event, player);
     }
 
     @ApiStatus.Internal
@@ -431,6 +450,28 @@ public class Gui implements InventoryHolder {
     }
 
     // INTERNALS
+
+    /**
+     * A drag over input slots only. All or nothing: the server writes the slots and the cursor from the event, so a drag
+     * that one slot refuses is cancelled as a whole. Each slot counts as one placement for the callbacks.
+     */
+    private void applyDrag(InventoryDragEvent event, Player player) {
+        final ClickType type = event.getType() == DragType.SINGLE ? ClickType.RIGHT : ClickType.LEFT;
+        final Map<Integer, GuiClick> clicks = new HashMap<>();
+        event.setCancelled(false);
+        for (Map.Entry<Integer, ItemStack> entry : event.getNewItems().entrySet()) {
+            final InventoryClickEvent placement = new InventoryClickEvent(event.getView(), InventoryType.SlotType.CONTAINER,
+                entry.getKey(), type, InventoryAction.PLACE_SOME);
+            placement.setCancelled(true);
+            final GuiClick click = new GuiClick(this, player, placement);
+            if (!this.inputs[entry.getKey()].accepts(click, entry.getValue())) {
+                event.setCancelled(true);
+                return;
+            }
+            clicks.put(entry.getKey(), click);
+        }
+        clicks.forEach((slot, click) -> this.inputs[slot].applyDragged(click, event.getNewItems().get(slot)));
+    }
 
     private void handlePlayerInventoryClick(InventoryClickEvent event, Player player) {
         if (event.getClick().isShiftClick()) {
