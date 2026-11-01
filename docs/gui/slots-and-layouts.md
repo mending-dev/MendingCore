@@ -77,6 +77,14 @@ protected void render() {
 }
 ```
 
+## A menu as big as needed
+
+`Gui.rowsFor(entries)` gives the fewest rows for a number of icons: 1 for up to 9, at most 6.
+
+```java
+new Gui(Component.text("Players"), Gui.rowsFor(players.size()));
+```
+
 ## Constants for slots
 
 Give slots names instead of scattering numbers:

@@ -6,6 +6,7 @@ plugins {
 dependencies {
     // Paper is provided by the server at runtime, but consumers need it on their compile classpath.
     compileOnlyApi(libs.paper.api)
+    testImplementation(libs.paper.api)
 }
 
 base {

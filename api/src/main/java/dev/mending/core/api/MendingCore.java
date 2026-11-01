@@ -1,5 +1,7 @@
 package dev.mending.core.api;
 
+import dev.mending.core.api.display.BossBars;
+import dev.mending.core.api.scoreboard.PlayerBoards;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,4 +32,14 @@ public interface MendingCore {
      * @return the MendingCore plugin instance, e.g. as owner for tasks and listeners
      */
     @NotNull Plugin plugin();
+
+    /**
+     * @return the scoreboards of the players, with their sidebars
+     */
+    @NotNull PlayerBoards boards();
+
+    /**
+     * @return the boss bars of the players
+     */
+    @NotNull BossBars bossBars();
 }

@@ -44,6 +44,18 @@
 
 * [YamlConfig](config/yaml-config.md)
 
+## Scoreboard
+
+* [Scoreboards and sidebars](scoreboard/sidebar.md)
+
+## Display
+
+* [Boss bars and titles](display/boss-bars-and-titles.md)
+
+## World
+
+* [Regions and positions](world/regions-and-positions.md)
+
 ## Inventory
 
 * [InventoryUtils](inventory/inventory-utils.md)

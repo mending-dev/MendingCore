@@ -2,6 +2,7 @@ package dev.mending.core.plugin;
 
 import dev.mending.core.api.MendingCore;
 import dev.mending.core.api.MendingCoreProvider;
+import dev.mending.core.plugin.display.DisplayListener;
 import dev.mending.core.plugin.gui.GuiListener;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +19,7 @@ public final class MendingCorePlugin extends JavaPlugin {
         getServer().getServicesManager().register(MendingCore.class, this.core, this, ServicePriority.Normal);
 
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
+        getServer().getPluginManager().registerEvents(new DisplayListener(this.core.boards(), this.core.bossBars()), this);
 
         getSLF4JLogger().info("MendingCore {} enabled", this.core.version());
     }

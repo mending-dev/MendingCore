@@ -1,7 +1,9 @@
 package dev.mending.core.plugin;
 
 import dev.mending.core.api.MendingCore;
+import dev.mending.core.api.display.BossBars;
 import dev.mending.core.api.gui.Gui;
+import dev.mending.core.api.scoreboard.PlayerBoards;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 final class MendingCoreImpl implements MendingCore {
 
     private final MendingCorePlugin plugin;
+    private final PlayerBoards boards = new PlayerBoards();
+    private final BossBars bossBars = new BossBars();
 
     MendingCoreImpl(@NotNull MendingCorePlugin plugin) {
         this.plugin = plugin;
@@ -27,6 +31,16 @@ final class MendingCoreImpl implements MendingCore {
         return this.plugin;
     }
 
+    @Override
+    public @NotNull PlayerBoards boards() {
+        return this.boards;
+    }
+
+    @Override
+    public @NotNull BossBars bossBars() {
+        return this.bossBars;
+    }
+
     /**
      * Releases all resources. Called once from {@link MendingCorePlugin#onDisable()}.
      */
@@ -37,5 +51,7 @@ final class MendingCoreImpl implements MendingCore {
                 player.closeInventory();
             }
         }
+        this.bossBars.close();
+        this.boards.close();
     }
 }

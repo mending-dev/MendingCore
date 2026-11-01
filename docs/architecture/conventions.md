@@ -9,6 +9,7 @@ description: Naming, threading, nullability and error handling conventions of th
 Everything that touches the Bukkit world, inventories or GUIs must run on the **main thread**. Methods that open or change what players see check this and throw `IllegalStateException` when called from another thread:
 
 * `Gui.open`, `Gui.refresh`, `Gui.title`, `Gui.rows`
+* `PlayerBoards`, `Sidebar`, `BossBars`
 
 Do slow work (database, files, HTTP) asynchronously and hand the result back to the main thread, see [Recipes](../gui/recipes.md).
 

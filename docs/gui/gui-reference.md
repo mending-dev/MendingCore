@@ -18,6 +18,7 @@ All methods that return `Gui` are fluent and return `this`.
 | `Gui(String title, int rows)` | Same, the title is parsed as MiniMessage. |
 | `static Gui create(Component title, int rows)` | Factory, same as the constructor. |
 | `static Gui create(Component title, int rows, Consumer<Gui> renderer)` | Factory with a render function. |
+| `static int rowsFor(int entries)` | The fewest rows that hold this many icons, from 1 to 6. |
 
 ## Hooks (override or configure)
 

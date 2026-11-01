@@ -13,6 +13,8 @@ description: The MendingCore entry point and how to obtain it.
 | `static MendingCore get()` | `MendingCore` | The active instance. Throws `IllegalStateException` if MendingCore is not enabled yet. |
 | `String version()` | `String` | Version of the running MendingCore plugin. |
 | `Plugin plugin()` | `Plugin` | The MendingCore plugin instance, usable as owner for tasks and listeners. |
+| `PlayerBoards boards()` | `PlayerBoards` | The players' scoreboards and sidebars, see [Scoreboards and sidebars](../scoreboard/sidebar.md). |
+| `BossBars bossBars()` | `BossBars` | The players' boss bars, see [Boss bars and titles](../display/boss-bars-and-titles.md). |
 
 ## Getting the instance
 

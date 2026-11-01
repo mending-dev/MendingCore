@@ -25,12 +25,16 @@ dev.mending.core.api
 ├── gui          Gui, GuiIcon, GuiClick, InputSlot, Pagination, Slots
 │   └── villager VillagerGui, Trade
 ├── item         ItemBuilder, Skulls
+├── scoreboard   PlayerBoards, Sidebar
+├── display      BossBars, Titles
+├── world        BlockPos, Position, BlockRegion
 ├── config       YamlConfig
 ├── inventory    InventoryUtils
 └── util         Parse
 
 dev.mending.core.plugin        (internal, may change at any time)
 ├── MendingCorePlugin, MendingCoreImpl
+├── display      DisplayListener
 └── gui          GuiListener
 ```
 

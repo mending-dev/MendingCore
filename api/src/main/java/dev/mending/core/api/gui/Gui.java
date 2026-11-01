@@ -94,6 +94,13 @@ public class Gui implements InventoryHolder {
     }
 
     /**
+     * @return the fewest rows that hold this many icons, at least 1 and at most {@value #MAX_ROWS}
+     */
+    public static int rowsFor(int entries) {
+        return Math.clamp((Math.max(entries, 1) + COLUMNS - 1) / COLUMNS, 1, MAX_ROWS);
+    }
+
+    /**
      * Called after the GUI was opened for a player.
      */
     protected void onOpen(@NotNull Player player) {
