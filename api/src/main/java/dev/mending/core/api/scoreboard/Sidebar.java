@@ -78,6 +78,19 @@ public final class Sidebar {
      */
     public @NotNull Sidebar update(@NotNull Component title, @NotNull List<? extends Component> lines) {
         ensureMainThread();
+        write(title, lines);
+        return this;
+    }
+
+    /**
+     * Takes the sidebar off the scoreboard. It comes back with the next update.
+     */
+    public void clear() {
+        ensureMainThread();
+        remove();
+    }
+
+    void write(Component title, List<? extends Component> lines) {
         Objects.requireNonNull(title, "title");
         final List<Component> shown = List.copyOf(lines.size() > MAX_LINES ? lines.subList(0, MAX_LINES) : lines);
 
@@ -92,7 +105,7 @@ public final class Sidebar {
             objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         }
         if (!created && this.title.equals(title) && this.lines.equals(shown)) {
-            return this;
+            return;
         }
         if (!created && !this.title.equals(title)) {
             objective.displayName(title);
@@ -110,14 +123,9 @@ public final class Sidebar {
         }
         this.title = title;
         this.lines = shown;
-        return this;
     }
 
-    /**
-     * Takes the sidebar off the scoreboard. It comes back with the next update.
-     */
-    public void clear() {
-        ensureMainThread();
+    void remove() {
         for (int index = 0; index < MAX_LINES; index++) {
             removeLine(index);
         }
