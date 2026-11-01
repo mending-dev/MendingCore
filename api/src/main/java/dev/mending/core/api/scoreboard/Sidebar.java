@@ -91,6 +91,9 @@ public final class Sidebar {
         if (objective.getDisplaySlot() != DisplaySlot.SIDEBAR) {
             objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         }
+        if (!created && this.title.equals(title) && this.lines.equals(shown)) {
+            return this;
+        }
         if (!created && !this.title.equals(title)) {
             objective.displayName(title);
         }

@@ -28,6 +28,8 @@ The board is a normal `Scoreboard`: add teams and objectives of your own. Names 
 
 {% hint style="warning" %}
 Call `player.setScoreboard(...)` only when the board really changes. Sending a board the player already sees makes the sidebar flicker.
+
+A player looks at one board only. If another plugin manages scoreboards of its own, using `board(...)` or `sidebar(...)` takes the player off its board, and the two plugins keep replacing each other. Use that plugin's way of showing lines on such a server.
 {% endhint %}
 
 ## Sidebar
@@ -45,7 +47,7 @@ Call `player.setScoreboard(...)` only when the board really changes. Sending a b
 
 ## Performance
 
-Only changed lines are sent, so calling `update` with the same content costs a comparison and nothing else. When the number of lines changes, every line's order value is written again, because it depends on the count.
+Only changed lines are sent, so calling `update` with the same content costs a comparison and nothing else, not even an allocation for the changes. When the number of lines changes, every line's order value is written again, because it depends on the count.
 
 ## Per viewer
 
