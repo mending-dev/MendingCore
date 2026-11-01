@@ -59,3 +59,4 @@ Complete rewrite of MendingCore as a two-module library: `api` for developers, `
 
 * `InventoryUtils`: fixed `toArray`, storage-slot semantics, new `has`, `remove`, `giveOrDrop`.
 * `Parse` replaces `StringType`: `Optional` results, ASCII-only digits, no locale pitfalls.
+* New `Bedrock`: `isBedrock(UUID)` and `isBedrock(OfflinePlayer)` tell Bedrock players by their Floodgate UUID, without a dependency on Floodgate.

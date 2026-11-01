@@ -30,6 +30,7 @@ Your plugins compile against the **API only** and declare the **plugin** as a ru
 | Configuration | `YamlConfig` | [YamlConfig](config/yaml-config.md) |
 | Inventories | `InventoryUtils` | [InventoryUtils](inventory/inventory-utils.md) |
 | Parsing | `Parse` | [Parse](util/parse.md) |
+| Bedrock players | `Bedrock` | [Bedrock](util/bedrock.md) |
 
 ## A first taste
 

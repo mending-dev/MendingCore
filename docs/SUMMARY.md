@@ -65,6 +65,7 @@
 ## Utilities
 
 * [Parse](util/parse.md)
+* [Bedrock](util/bedrock.md)
 
 ## Reference
 
