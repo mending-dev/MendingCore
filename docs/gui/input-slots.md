@@ -76,7 +76,7 @@ Everything else on an input slot is cancelled and does nothing: drop, offhand sw
 * **Limits** apply to every way of putting items in.
 * **Number keys** check `canTake` for the content and `canPut` for the hotbar item. If the hotbar stack is above the limit and the slot is empty, the limit moves and the rest stays in the hotbar. If the slot holds something, the swap only happens when the whole hotbar stack fits.
 * **Middle click** checks `canTake`, moves nothing and runs no callback: it only copies, as in vanilla.
-* **Dragging** works only if every touched slot is an input slot, and is **all or nothing**: if one slot's `canPut` or limit refuses, the whole drag is cancelled. A drag touching an icon or the player's inventory as well is cancelled too. A slot showing a placeholder cannot be dragged onto; click it instead. Each slot counts as one placement: `canPut` receives the slot's whole new stack, `onPut` the added amount, and `click.event()` is a synthetic cancelled event, not one from the server. Do not call `click.close()` or `click.open(...)` differently because of it, they work as usual.
+* **Dragging** works only if every touched slot is an input slot, and is **all or nothing**: if one slot's `canPut` or limit refuses, the whole drag is cancelled. A drag touching an icon or the player's inventory as well is cancelled too. A slot showing a placeholder cannot be dragged onto; click it instead. Each slot counts as one click: `canPut` receives the slot's whole new stack, `onPut` the added amount, `click.type()` is `LEFT` or `RIGHT`, `click.isDrag()` is `true`, and `click.event()` is the `InventoryDragEvent`.
 
 ## Refund on close
 

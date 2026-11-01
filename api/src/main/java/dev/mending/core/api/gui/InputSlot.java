@@ -3,6 +3,7 @@ package dev.mending.core.api.gui;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
@@ -179,23 +180,11 @@ public final class InputSlot {
         if (!this.canPut.test(click, stack)) {
             return 0;
         }
-        final int limit = limitFor(stack);
-        final int moved;
-        if (this.content == null) {
-            moved = Math.min(stack.getAmount(), limit);
-            if (moved <= 0) {
-                return 0;
-            }
-            update(copyOf(stack, moved));
-        } else if (this.content.isSimilar(stack)) {
-            moved = Math.min(stack.getAmount(), limit - this.content.getAmount());
-            if (moved <= 0) {
-                return 0;
-            }
-            update(copyOf(this.content, this.content.getAmount() + moved));
-        } else {
+        final int moved = SlotMoves.insert(amountOf(this.content), stack.getAmount(), isSimilar(stack), limitFor(stack));
+        if (moved <= 0) {
             return 0;
         }
+        update(copyOf(stack, amountOf(this.content) + moved));
         this.onPut.accept(click, copyOf(stack, moved));
         this.onChange.accept(click);
         return moved;
@@ -239,81 +228,51 @@ public final class InputSlot {
 
     private void handleCursor(GuiClick click) {
         final Player player = click.player();
-        final boolean single = click.type() == ClickType.RIGHT;
         final ItemStack cursor = player.getItemOnCursor().clone();
-
-        if (cursor.isEmpty()) {
-            takeToCursor(click, player, single);
-            return;
-        }
-        if (!this.canPut.test(click, cursor)) {
-            return;
-        }
-
-        if (this.content == null) {
-            final int amount = single ? 1 : Math.min(cursor.getAmount(), limitFor(cursor));
-            if (amount <= 0) {
-                return;
-            }
-            update(copyOf(cursor, amount));
-            player.setItemOnCursor(remainder(cursor, amount));
-            this.onPut.accept(click, copyOf(cursor, amount));
-            this.onChange.accept(click);
-            return;
-        }
-
-        if (this.content.isSimilar(cursor)) {
-            final int space = limitFor(this.content) - this.content.getAmount();
-            final int moved = Math.min(single ? 1 : cursor.getAmount(), space);
-            if (moved <= 0) {
-                return;
-            }
-            update(copyOf(this.content, this.content.getAmount() + moved));
-            player.setItemOnCursor(remainder(cursor, moved));
-            this.onPut.accept(click, copyOf(cursor, moved));
-            this.onChange.accept(click);
-            return;
-        }
-
-        // Different item: swap with the cursor.
-        if (cursor.getAmount() > limitFor(cursor) || !this.canTake.test(click, this.content)) {
-            return;
-        }
-        final ItemStack previous = this.content;
-        update(cursor.clone());
-        player.setItemOnCursor(previous);
-        this.onTake.accept(click, previous.clone());
-        this.onPut.accept(click, cursor.clone());
-        this.onChange.accept(click);
+        apply(click, cursor, SlotMoves.cursorClick(amountOf(this.content), amountOf(cursor), isSimilar(cursor),
+            cursor.isEmpty() ? 0 : limitFor(cursor), click.type() == ClickType.RIGHT), player::setItemOnCursor);
     }
 
-    /** A number key swaps the slot with that hotbar slot; what the limit leaves stays in the hotbar. */
+    /** A number key trades the slot with that hotbar slot; what the limit leaves stays in the hotbar. */
     private void handleNumberKey(GuiClick click) {
+        if (!(click.event() instanceof InventoryClickEvent event)) {
+            return;
+        }
         final PlayerInventory inventory = click.player().getInventory();
-        final int hotbar = click.event().getHotbarButton();
-        final ItemStack held = inventory.getItem(hotbar);
-        final boolean holding = held != null && !held.isEmpty();
-        if (this.content == null && !holding) {
+        final int hotbar = event.getHotbarButton();
+        final ItemStack item = inventory.getItem(hotbar);
+        final ItemStack held = item == null ? ItemStack.empty() : item.clone();
+        apply(click, held, SlotMoves.numberKey(amountOf(this.content), amountOf(held),
+            held.isEmpty() ? 0 : limitFor(held)), stack -> inventory.setItem(hotbar, stack));
+    }
+
+    /**
+     * Carries out a move between this slot and another stack, if {@code canTake} and {@code canPut} allow it.
+     */
+    private void apply(GuiClick click, ItemStack other, @Nullable SlotMoves.Outcome outcome,
+                       Consumer<@Nullable ItemStack> setOther) {
+        if (outcome == null) {
             return;
-        }
-        if (this.content != null && !this.canTake.test(click, this.content)) {
-            return;
-        }
-        if (holding && !this.canPut.test(click, held)) {
-            return;
-        }
-        final int amount = holding ? Math.min(held.getAmount(), limitFor(held)) : 0;
-        if (this.content != null && holding && amount < held.getAmount()) {
-            return; // nowhere to put the rest
         }
         final ItemStack previous = this.content;
-        update(holding ? copyOf(held, amount) : null);
-        inventory.setItem(hotbar, previous != null ? previous : holding ? remainder(held, amount) : null);
-        if (previous != null) {
-            this.onTake.accept(click, previous.clone());
+        final int before = amountOf(previous);
+        final int put = outcome.swapped() ? outcome.content() : Math.max(0, outcome.content() - before);
+        final int taken = outcome.swapped() ? before : Math.max(0, before - outcome.content());
+        if (taken > 0 && !this.canTake.test(click, previous)) {
+            return;
         }
-        if (holding) {
-            this.onPut.accept(click, copyOf(held, amount));
+        if (put > 0 && !this.canPut.test(click, other)) {
+            return;
+        }
+        final ItemStack contentItem = outcome.swapped() || previous == null ? other : previous;
+        final ItemStack otherItem = outcome.swapped() || other.isEmpty() ? previous : other;
+        update(outcome.content() == 0 ? null : copyOf(contentItem, outcome.content()));
+        setOther.accept(outcome.other() == 0 ? null : copyOf(otherItem, outcome.other()));
+        if (taken > 0) {
+            this.onTake.accept(click, copyOf(previous, taken));
+        }
+        if (put > 0) {
+            this.onPut.accept(click, copyOf(other, put));
         }
         this.onChange.accept(click);
     }
@@ -325,19 +284,6 @@ public final class InputSlot {
             && this.canTake.test(click, this.content)) {
             player.setItemOnCursor(copyOf(this.content, this.content.getMaxStackSize()));
         }
-    }
-
-    private void takeToCursor(GuiClick click, Player player, boolean half) {
-        if (this.content == null || !this.canTake.test(click, this.content)) {
-            return;
-        }
-        final int total = this.content.getAmount();
-        final int amount = half ? (total + 1) / 2 : total;
-        final ItemStack taken = copyOf(this.content, amount);
-        update(total - amount <= 0 ? null : copyOf(this.content, total - amount));
-        player.setItemOnCursor(taken);
-        this.onTake.accept(click, taken.clone());
-        this.onChange.accept(click);
     }
 
     private void handleShiftOut(GuiClick click) {
@@ -368,15 +314,17 @@ public final class InputSlot {
         return this.maxStackSize > 0 ? Math.min(this.maxStackSize, max) : max;
     }
 
+    private boolean isSimilar(ItemStack item) {
+        return this.content != null && this.content.isSimilar(item);
+    }
+
+    private static int amountOf(@Nullable ItemStack item) {
+        return item == null || item.isEmpty() ? 0 : item.getAmount();
+    }
+
     private static ItemStack copyOf(ItemStack item, int amount) {
         final ItemStack copy = item.clone();
         copy.setAmount(amount);
         return copy;
-    }
-
-    /** What stays on the cursor after {@code used} items were taken from it; null if nothing. */
-    private static @Nullable ItemStack remainder(ItemStack cursor, int used) {
-        final int left = cursor.getAmount() - used;
-        return left <= 0 ? null : copyOf(cursor, left);
     }
 }

@@ -104,7 +104,7 @@ public final class MenuGui extends Gui {
 | `getItemStack()` | `itemStack()` (returns a copy) |
 | `getAction()` | removed |
 
-Event access: `click.event()`, player: `click.player()` (no cast needed).
+Event access: `click.event()` (an `InventoryClickEvent` unless `click.isDrag()`), player: `click.player()` (no cast needed).
 
 ## ActionSlot to InputSlot
 

@@ -51,7 +51,8 @@ The item of a `GuiIcon` is never changed after creation, and handlers receive th
 | --- | --- |
 | `Gui gui()` | The GUI the click happened in. |
 | `Player player()` | The clicking player. |
-| `InventoryClickEvent event()` | The raw event. It is **already cancelled**. |
+| `InventoryInteractEvent event()` | The raw event: an `InventoryClickEvent`, **already cancelled**, or for a drag over input slots the `InventoryDragEvent`. |
+| `boolean isDrag()` | Whether this is one slot of a drag over input slots. |
 | `int slot()` | The clicked slot. |
 | `ClickType type()` | The click type. |
 | `boolean isLeftClick()` | Left, shift-left, window-border left or double click. |
@@ -67,7 +68,7 @@ Closing or opening an inventory from inside the click event that is currently be
 
 ### The event is cancelled
 
-Do not call `event().setCancelled(false)`. To let players move items use an [input slot](input-slots.md).
+Do not change whether `event()` is cancelled. To let players move items use an [input slot](input-slots.md).
 
 ## Click types
 

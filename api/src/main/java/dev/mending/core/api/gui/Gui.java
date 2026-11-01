@@ -10,7 +10,6 @@ import org.bukkit.event.inventory.DragType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -390,7 +389,7 @@ public class Gui implements InventoryHolder {
             return; // already preceded by two single clicks
         }
 
-        final GuiClick click = new GuiClick(this, player, event);
+        final GuiClick click = new GuiClick(this, player, event.getRawSlot(), event.getClick(), event);
         final InputSlot input = this.inputs[raw];
         if (input != null) {
             input.handle(click);
@@ -453,17 +452,14 @@ public class Gui implements InventoryHolder {
 
     /**
      * A drag over input slots only. All or nothing: the server writes the slots and the cursor from the event, so a drag
-     * that one slot refuses is cancelled as a whole. Each slot counts as one placement for the callbacks.
+     * that one slot refuses is cancelled as a whole. Each slot counts as one click for the callbacks.
      */
     private void applyDrag(InventoryDragEvent event, Player player) {
         final ClickType type = event.getType() == DragType.SINGLE ? ClickType.RIGHT : ClickType.LEFT;
         final Map<Integer, GuiClick> clicks = new HashMap<>();
         event.setCancelled(false);
         for (Map.Entry<Integer, ItemStack> entry : event.getNewItems().entrySet()) {
-            final InventoryClickEvent placement = new InventoryClickEvent(event.getView(), InventoryType.SlotType.CONTAINER,
-                entry.getKey(), type, InventoryAction.PLACE_SOME);
-            placement.setCancelled(true);
-            final GuiClick click = new GuiClick(this, player, placement);
+            final GuiClick click = new GuiClick(this, player, entry.getKey(), type, event);
             if (!this.inputs[entry.getKey()].accepts(click, entry.getValue())) {
                 event.setCancelled(true);
                 return;
@@ -490,7 +486,7 @@ public class Gui implements InventoryHolder {
         if (current == null || current.isEmpty()) {
             return;
         }
-        final GuiClick click = new GuiClick(this, player, event);
+        final GuiClick click = new GuiClick(this, player, event.getRawSlot(), event.getClick(), event);
         final ItemStack remaining = current.clone();
         for (InputSlot input : this.inputs) {
             if (input == null) {
