@@ -21,13 +21,10 @@ plugin, so never shade them into your own plugin.
 ```groovy
 repositories {
     maven { url = 'https://repo.mending.dev/releases' }
-    maven { url = 'https://repo.mending.dev/snapshots' }
-    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:26.3.build.+'
-    compileOnly 'dev.mending.core:paper-api:2.0.0-SNAPSHOT'
+    compileOnly 'dev.mending.core:paper-api:2.0.0'
 }
 ```
 
@@ -39,13 +36,10 @@ dependencies {
 ```kotlin
 repositories {
     maven("https://repo.mending.dev/releases")
-    maven("https://repo.mending.dev/snapshots")
-    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
-    compileOnly("dev.mending.core:paper-api:2.0.0-SNAPSHOT")
+    compileOnly("dev.mending.core:paper-api:2.0.0")
 }
 ```
 
@@ -60,27 +54,13 @@ dependencies {
         <id>mending-releases</id>
         <url>https://repo.mending.dev/releases</url>
     </repository>
-    <repository>
-        <id>mending-snapshots</id>
-        <url>https://repo.mending.dev/snapshots</url>
-    </repository>
-    <repository>
-        <id>papermc</id>
-        <url>https://repo.papermc.io/repository/maven-public/</url>
-    </repository>
 </repositories>
 
 <dependencies>
     <dependency>
-        <groupId>io.papermc.paper</groupId>
-        <artifactId>paper-api</artifactId>
-        <version>26.3.build.+</version> <!-- pin a concrete build, Maven has no "+" -->
-        <scope>provided</scope>
-    </dependency>
-    <dependency>
         <groupId>dev.mending.core</groupId>
         <artifactId>paper-api</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>2.0.0</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>

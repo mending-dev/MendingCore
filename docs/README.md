@@ -7,7 +7,7 @@ description: Essential core library and API for Paper plugins.
 MendingCore is the shared foundation for all my plugins. It contains the utilities that would otherwise be copied from plugin to plugin: a GUI framework, an item builder, YAML config handling, inventory helpers and safe parsing.
 
 {% hint style="info" %}
-**Version 2.0.0-SNAPSHOT** is the successor of MendingCore 1.x. It is a rewrite, not a drop-in update. See [Migration from 1.x](reference/migration-from-1x.md).
+**Version 2.0.0** is the successor of MendingCore 1.x. It is a rewrite, not a drop-in update. See [Migration from 1.x](reference/migration-from-1x.md).
 {% endhint %}
 
 ## Two modules, one rule

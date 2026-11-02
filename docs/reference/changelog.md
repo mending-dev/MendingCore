@@ -4,7 +4,7 @@ description: Release notes of MendingCore.
 
 # Changelog
 
-## 2.0.0-SNAPSHOT
+## 2.0.0
 
 Complete rewrite of MendingCore as a two-module library: `api` for developers, `plugin` for the server. Successor of MendingCore 1.x, see [Migration from 1.x](migration-from-1x.md).
 
